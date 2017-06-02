@@ -1,9 +1,9 @@
 extends layout
 block head
 	title="ESplay"
-	link(rel="stylesheet", href="/css/esplay.css")
+	link(rel="stylesheet", href="/css/ESplay.css")
 block content
-	body 
+	body(ng-app="ESplayApp")
 		include partials/nav
 		include partials/esplay
-	script(src="/build/esplay.js")
+	script(src="/build/ESplay.js")
