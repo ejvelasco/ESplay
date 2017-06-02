@@ -1,19 +1,14 @@
+.left, .right{
+	padding: 0 !important;
+	margin: 0 !important;
+  	display : flex;
+  	height : 100%;
+}
 .left{
-  display : flex;
-  justify-content : center;
-  align-items : center;
-  background-color:#3d231b;
-  height : 100%;
-  color : #FFF;
-
+	background-color: #BABABA;
 }
 .right{
-  display : flex;
-  justify-content : center;
-  align-items : center;
-  background-color:#FFF;
-  height : 100%;
-  color : #3d231b;
+	background-color: white;
 }
 @media (max-width: 1200px) {
   .left{
@@ -22,12 +17,4 @@
   .right{
     height:50%
   }
-}
-.about{
-  display : flex;
-  justify-content : center;
-  align-items : center;
-  background-color:#000;
-  color : #FFF;
-  height:100%
 }
