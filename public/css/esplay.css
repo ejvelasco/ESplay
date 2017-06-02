@@ -1,20 +1,2 @@
-.left, .right{
-	padding: 0 !important;
-	margin: 0 !important;
-  	display : flex;
-  	height : 100%;
-}
-.left{
-	background-color: #BABABA;
-}
-.right{
-	background-color: white;
-}
-@media (max-width: 1200px) {
-  .left{
-    height:50%
-  }
-  .right{
-    height:50%
-  }
-}
+@import "main.css";
+@import "nav.css";

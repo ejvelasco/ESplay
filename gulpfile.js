@@ -8,10 +8,10 @@ const livereload = require("gulp-livereload");
 
 gulp.task("js", function() {
     return (
-        browserify("./public/js/portfolio.js")
+        browserify("./public/js/esplay.js")
         .transform("babelify", {presets: ["es2015"]})
         .bundle()
-        .pipe(source("portfolio.js"))
+        .pipe(source("esplay.js"))
         .pipe(gulp.dest("./public/build/"))
         .pipe(livereload())
     );
@@ -28,7 +28,7 @@ gulp.task("pug-2", function(){
 });
 
 gulp.task("css", function () {
-    gulp.src("./public/css/portfolio.css")
+    gulp.src("./public/css/esplay.css")
         .pipe(importCss())
         .pipe(cleanCSS({compatibility: "ie8"}))
         .pipe(gulp.dest("./public/build/"))
