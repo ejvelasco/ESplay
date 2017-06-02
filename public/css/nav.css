@@ -5,5 +5,7 @@
 	position: fixed !important;
 	z-index: 9999 !important;
 	width: 100% !important;
+	font-family: "Roboto", sans-serif !important;
+	font-size: 1.2em;
 }
 
