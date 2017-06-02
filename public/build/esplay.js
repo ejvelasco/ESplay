@@ -57189,15 +57189,28 @@ function hasOwnProperty(obj, prop) {
 
 var babel = require("babel-core");
 global.jQuery = require('jquery');
+var $ = global.jQuery;
 require("bootstrap");
-require("./main")(babel);
+require("./main");
+require('./nav')($);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./main":1036,"babel-core":4,"bootstrap":874,"jquery":1015}],1036:[function(require,module,exports){
+},{"./main":1036,"./nav":1037,"babel-core":4,"bootstrap":874,"jquery":1015}],1036:[function(require,module,exports){
 "use strict";
 
 module.exports = function (babel) {
 	console.log(babel);
+};
+
+},{}],1037:[function(require,module,exports){
+'use strict';
+
+module.exports = function ($) {
+	$('#run').on("click", function () {
+		var code = $('#code').val();
+		var $div = '<p>' + code + '</p>';
+		$('#console').html('').append($div);
+	});
 };
 
 },{}]},{},[1035]);

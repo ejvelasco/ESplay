@@ -6,6 +6,13 @@ textarea{
   border-right: solid 1px #BABABA !important;
   padding: 15px !important;
 }
+#console{
+  margin-top: 50px;
+   padding: 15px;
+  height: 100%;
+  width: 100%;
+  white-space: pre;
+}
 .label{
   position: absolute !important;
   right: 10px !important;
