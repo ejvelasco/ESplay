@@ -3,8 +3,8 @@
 		row
 			.col-lg-6.col-sm-12.left
 				p.label #[span.glyphicon.glyphicon-flash] javascript
-				textarea#code
+				textarea#code(ng-model="code")
 			.col-lg-6.col-sm-12.right
 				p.label #[span.glyphicon.glyphicon-console] console
-				#console
+				#console(ng-model="console") {{ console }}
 				

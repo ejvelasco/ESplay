@@ -3,11 +3,9 @@ module.exports = (app, babel) => {
 	    	res.render("main");
   	});
   	app.post("/transpile", (req, res) => {
-  		console.log(req.body)
-	  //   	const result = babel.transform(req.body, {
-			// 	presets: ["es2015"]
-			// });
-			// console.log(result);
-	    	// res.json({result: result});
+	    const result = babel.transform(req.body.code, {
+			presets: ["es2015"]
+		});
+	    res.json({result: result});
   	});
 };

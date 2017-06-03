@@ -1,4 +1,4 @@
-#nav(ng-controller="transpileCtrl")
+#nav
 	nav.navbar.navbar-default
 		.container-fluid
 			.navbar-header
@@ -30,7 +30,7 @@
 							li
 								a(href="#") Choose theme...
 					li
-						a(id="run") #[span.glyphicon.glyphicon-play] Run
+						a(id="run" ng-click="transpile()") #[span.glyphicon.glyphicon-play] Run
 					li
 						a(href='#') #[span.glyphicon.glyphicon-check] Lint
 					li

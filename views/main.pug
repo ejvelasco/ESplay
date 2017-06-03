@@ -4,6 +4,7 @@ block head
 	link(rel="stylesheet", href="/css/ESplay.css")
 block content
 	body(ng-app="ESplayApp")
-		include partials/nav
-		include partials/esplay
+		#container(ng-controller="transpileCtrl")
+			include partials/nav
+			include partials/esplay
 	script(src="/build/ESplay.js")
