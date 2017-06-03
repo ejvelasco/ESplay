@@ -46043,34 +46043,42 @@ module.exports = function (app, $) {
     var ESplayMethods = {
       enableTextareaTab: function enableTextareaTab($) {
         $("textarea").keydown(function (e) {
-          if (e.keyCode === 9) {
-            // tab was pressed
-            // get caret position/selection
+          if (e.keycode === 9) {
             var start = this.selectionStart;
             var end = this.selectionEnd;
 
             var $this = $(this);
 
-            // set textarea value to: text before caret + tab + text after caret
             $this.val($this.val().substring(0, start) + "\t" + $this.val().substring(end));
 
-            // put caret at right position again
             this.selectionStart = this.selectionEnd = start + 1;
 
-            // prevent the focus lose
             return false;
           }
         });
       },
-      transpile: function transpile($scope, $http) {
+      transpile: function transpile($scope, $http, called) {
         return function () {
           var message = { code: $scope.code };
           $http.post('/transpile', message).then(function (res) {
             var data = res.data;
-            // console.log(data.result.code);
-            // console.log(data.result.map);
-            // console.log(data.result.ast);
-            $scope.console = data.result.code;
+            var code = data.result.code;
+            var precode = void 0;
+            if (!called) {
+              precode = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tdocument.body.append(logs[i][0]);\n \t\t\t\t\t\t\t}";
+            } else {
+              precode = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tdocument.body.append(logs[i][0]);\n \t\t\t\t\t\t\t}";
+            }
+
+            window.frames[0].document.open();
+            window.frames[0].document.write("<!DOCTYPE html>");
+            window.frames[0].document.write("<html>");
+            window.frames[0].document.write("<body>");
+            window.frames[0].document.write("<script type='text/javascript'>" + precode + "</script>");
+            window.frames[0].document.write("</body>");
+            window.frames[0].document.write("</html>");
+            window.frames[0].document.close();
+            called = true;
           });
         };
       }
@@ -46086,7 +46094,7 @@ module.exports = function (app, $) {
 
 	app.controller("transpileCtrl", ["$scope", "$http", "ESplayMethods", function ($scope, $http, ESplayMethods) {
 		ESplayMethods.enableTextareaTab($);
-		$scope.transpile = ESplayMethods.transpile($scope, $http);
+		$scope.transpile = ESplayMethods.transpile($scope, $http, false);
 	}]);
 };
 

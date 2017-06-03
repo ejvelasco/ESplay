@@ -6,37 +6,61 @@ module.exports = (app, $) => {
  		const ESplayMethods = {
  			enableTextareaTab($){
  				$("textarea").keydown(function(e) {
- 				    if(e.keyCode === 9) { // tab was pressed
- 				        // get caret position/selection
+ 					if(e.keycode === 9){
  				        var start = this.selectionStart;
  				        var end = this.selectionEnd;
 
  				        var $this = $(this);
 
- 				        // set textarea value to: text before caret + tab + text after caret
  				        $this.val($this.val().substring(0, start)
  				                    + "\t"
  				                    + $this.val().substring(end));
 
- 				        // put caret at right position again
  				        this.selectionStart = this.selectionEnd = start + 1;
 
- 				        // prevent the focus lose
  				        return false;
  				    }
  				});
  			},
- 			transpile($scope, $http){
+ 			transpile($scope, $http, called){
  				return () => {
  					const message = {code: $scope.code};
  					$http.post('/transpile', message)
  					.then((res) => {
  						const data = res.data;
- 						// console.log(data.result.code);
- 						// console.log(data.result.map);
- 						// console.log(data.result.ast);
- 						$scope.console = data.result.code;
+ 						let code = data.result.code;
+ 						let precode;
+ 						if(!called){
+ 							precode = `let logs = [];
+ 							let log = console.log;
+ 							console.log = function(){
+ 							   logs.push(arguments);
+ 							   log.apply(console, arguments);
+ 							}
+ 							${code}
+ 							for(let i = 0; i < logs.length; i++){
+ 								document.body.append(logs[i][0]);
+ 							}`;
+ 						} else{
+ 							precode = `
+ 							logs = [];
+ 							${code}
+ 							for(let i = 0; i < logs.length; i++){
+ 								document.body.append(logs[i][0]);
+ 							}`;
+ 						}
+ 						
+ 						window.frames[0].document.open();
+ 						window.frames[0].document.write("<!DOCTYPE html>");
+				        window.frames[0].document.write("<html>");
+				        window.frames[0].document.write("<body>");
+				        window.frames[0].document.write("<script type='text/javascript'>" + precode + "</script>");
+				        window.frames[0].document.write("</body>");
+				        window.frames[0].document.write("</html>");
+				        window.frames[0].document.close();
+						called = true;
  					});	
+
  				}
  			}
  		}
