@@ -1,10 +1,8 @@
-textarea{
-  width: 100% !important;
+#code{
   margin-top: 50px !important;
-  border: none !important;
-  outline: none !important;
-  border-right: solid 1px #BABABA !important;
-  padding: 15px !important;
+  width: 100% !important;
+  background-color: white !important;
+  border-right: solid 2px rgba(0,0,0,.3) !important;
 }
 #console{
   margin-top: 50px;

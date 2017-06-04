@@ -46024,22 +46024,27 @@ return jQuery;
 	"use strict";
 
 	var angular = require("angular");
-	global.jQuery = require('jquery');
+	var $ = global.jQuery = require('jquery');
 	//set up angular application
 	var ESplayApp = angular.module("ESplayApp", []);
-	require("./ESplayMethods")(ESplayApp, global.jQuery);
-	require("./transpileCtrl")(ESplayApp, global.jQuery);
+	require("./ESplayMethods")(ESplayApp, $);
+	require("./transpileCtrl")(ESplayApp, $);
 	//bootstrap
 	require("bootstrap");
+	require("./numberText");
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ESplayMethods":18,"./transpileCtrl":19,"angular":2,"bootstrap":3,"jquery":16}],18:[function(require,module,exports){
+},{"./ESplayMethods":18,"./numberText":19,"./transpileCtrl":20,"angular":2,"bootstrap":3,"jquery":16}],18:[function(require,module,exports){
 "use strict";
 
 module.exports = function (app, $) {
 
   app.factory("ESplayMethods", function ($http) {
+    var myCodeMirror = CodeMirror(document.getElementById("code"), {
+      lineNumbers: true,
+      theme: "dracula"
+    });
     var ESplayMethods = {
       enableTextareaTab: function enableTextareaTab($) {
         $("textarea").keydown(function (e) {
@@ -46059,15 +46064,16 @@ module.exports = function (app, $) {
       },
       transpile: function transpile($scope, $http, called) {
         return function () {
-          var message = { code: $scope.code };
+          var message = { code: myCodeMirror.getValue() };
+          console.log(message);
           $http.post('/transpile', message).then(function (res) {
             var data = res.data;
             var code = data.result.code;
             var precode = void 0;
             if (!called) {
-              precode = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tdocument.body.append(logs[i][0]);\n \t\t\t\t\t\t\t}";
+              precode = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
             } else {
-              precode = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tdocument.body.append(logs[i][0]);\n \t\t\t\t\t\t\t}";
+              precode = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
             }
 
             window.frames[0].document.open();
@@ -46090,10 +46096,159 @@ module.exports = function (app, $) {
 },{}],19:[function(require,module,exports){
 "use strict";
 
+/*
+ * NumberedTextarea - jQuery Plugin
+ * Textarea with line numbering
+ *
+ * Copyright (c) 2015 Dariusz Arciszewski
+ *
+ * Requires: jQuery v2.0+
+ *
+ * Licensed under the GPL licenses:
+ *   http://www.gnu.org/licenses/gpl.html
+ */
+
+(function ($) {
+
+    $.fn.numberedtextarea = function (options) {
+
+        var settings = $.extend({
+            color: null, // Font color
+            borderColor: null, // Border color
+            class: null, // Add class to the 'numberedtextarea-wrapper'
+            allowTabChar: false // If true Tab key creates indentation
+        }, options);
+
+        this.each(function () {
+            if (this.nodeName.toLowerCase() !== "textarea") {
+                console.log('This is not a <textarea>, so no way Jose...');
+                return false;
+            }
+
+            addWrapper(this, settings);
+            addLineNumbers(this, settings);
+
+            if (settings.allowTabChar) {
+                $(this).allowTabChar();
+            }
+        });
+
+        return this;
+    };
+
+    $.fn.allowTabChar = function () {
+        if (this.jquery) {
+            this.each(function () {
+                if (this.nodeType == 1) {
+                    var nodeName = this.nodeName.toLowerCase();
+                    if (nodeName == "textarea" || nodeName == "input" && this.type == "text") {
+                        allowTabChar(this);
+                    }
+                }
+            });
+        }
+        return this;
+    };
+
+    function addWrapper(element, settings) {
+        var wrapper = $('<div class="numberedtextarea-wrapper"></div>').insertAfter(element);
+        $(element).detach().appendTo(wrapper);
+    }
+
+    function addLineNumbers(element, settings) {
+        element = $(element);
+
+        var wrapper = element.parents('.numberedtextarea-wrapper');
+
+        // Get textarea styles to implement it on line numbers div
+        var paddingLeft = parseFloat(element.css('padding-left'));
+        var paddingTop = parseFloat(element.css('padding-top'));
+        var paddingBottom = parseFloat(element.css('padding-bottom'));
+
+        var lineNumbers = $('<div class="numberedtextarea-line-numbers"></div>').insertAfter(element);
+
+        element.css({
+            paddingLeft: paddingLeft + lineNumbers.width() + 'px'
+        }).on('input propertychange change keyup paste', function () {
+            renderLineNumbers(element, settings);
+        }).on('scroll', function () {
+            scrollLineNumbers(element, settings);
+        });
+
+        lineNumbers.css({
+            paddingLeft: paddingLeft + 'px',
+            paddingTop: paddingTop + 'px',
+            lineHeight: element.css('line-height'),
+            fontFamily: element.css('font-family'),
+            width: lineNumbers.width() - paddingLeft + 'px'
+        });
+
+        element.trigger('change');
+    }
+
+    function renderLineNumbers(element, settings) {
+        element = $(element);
+
+        var linesDiv = element.parent().find('.numberedtextarea-line-numbers');
+        var count = element.val().split("\n").length;
+        var paddingBottom = parseFloat(element.css('padding-bottom'));
+
+        linesDiv.find('.numberedtextarea-number').remove();
+
+        for (var i = 1; i <= count; i++) {
+            var line = $('<div class="numberedtextarea-number numberedtextarea-number-' + i + '">' + i + '</div>').appendTo(linesDiv);
+
+            if (i === count) {
+                line.css('margin-bottom', paddingBottom + 'px');
+            }
+        }
+    }
+
+    function scrollLineNumbers(element, settings) {
+        element = $(element);
+        var linesDiv = element.parent().find('.numberedtextarea-line-numbers');
+        linesDiv.scrollTop(element.scrollTop());
+    }
+
+    function pasteIntoInput(el, text) {
+        el.focus();
+        if (typeof el.selectionStart == "number") {
+            var val = el.value;
+            var selStart = el.selectionStart;
+            el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
+            el.selectionEnd = el.selectionStart = selStart + text.length;
+        } else if (typeof document.selection != "undefined") {
+            var textRange = document.selection.createRange();
+            textRange.text = text;
+            textRange.collapse(false);
+            textRange.select();
+        }
+    }
+
+    function allowTabChar(el) {
+        $(el).keydown(function (e) {
+            if (e.which == 9) {
+                pasteIntoInput(this, "\t");
+                return false;
+            }
+        });
+
+        // For Opera, which only allows suppression of keypress events, not keydown
+        $(el).keypress(function (e) {
+            if (e.which == 9) {
+                return false;
+            }
+        });
+    }
+})(jQuery);
+
+},{}],20:[function(require,module,exports){
+"use strict";
+
 module.exports = function (app, $) {
 
 	app.controller("transpileCtrl", ["$scope", "$http", "ESplayMethods", function ($scope, $http, ESplayMethods) {
-		ESplayMethods.enableTextareaTab($);
+		// ESplayMethods.enableTextareaTab($);
 		$scope.transpile = ESplayMethods.transpile($scope, $http, false);
 	}]);
 };

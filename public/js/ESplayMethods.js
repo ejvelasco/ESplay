@@ -3,6 +3,10 @@
 module.exports = (app, $) => {	
 
 	app.factory("ESplayMethods", ($http) => {
+		var myCodeMirror = CodeMirror(document.getElementById("code"), {
+			 lineNumbers: true, 
+			 theme: "dracula"
+		});
  		const ESplayMethods = {
  			enableTextareaTab($){
  				$("textarea").keydown(function(e) {
@@ -24,7 +28,8 @@ module.exports = (app, $) => {
  			},
  			transpile($scope, $http, called){
  				return () => {
- 					const message = {code: $scope.code};
+ 					const message = {code: myCodeMirror.getValue() };
+ 					console.log(message)
  					$http.post('/transpile', message)
  					.then((res) => {
  						const data = res.data;
@@ -38,15 +43,22 @@ module.exports = (app, $) => {
  							   log.apply(console, arguments);
  							}
  							${code}
+ 							let para, t;
  							for(let i = 0; i < logs.length; i++){
- 								document.body.append(logs[i][0]);
+ 								para = document.createElement("P");                       
+ 								t = document.createTextNode(logs[i][0]);      
+ 								para.appendChild(t); 
+ 								document.body.appendChild(para);
  							}`;
  						} else{
  							precode = `
  							logs = [];
- 							${code}
+ 							${code}                                      
  							for(let i = 0; i < logs.length; i++){
- 								document.body.append(logs[i][0]);
+ 								para = document.createElement("P");                       
+ 								t = document.createTextNode(logs[i][0]);      
+ 								para.appendChild(t); 
+ 								document.body.appendChild(para);
  							}`;
  						}
  						
@@ -60,7 +72,6 @@ module.exports = (app, $) => {
 				        window.frames[0].document.close();
 						called = true;
  					});	
-
  				}
  			}
  		}
