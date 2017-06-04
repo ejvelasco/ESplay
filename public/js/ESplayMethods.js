@@ -1,31 +1,16 @@
 "use strict";
 
-module.exports = (app, $) => {	
+module.exports = (app, $, JSHINT) => {	
 
 	app.factory("ESplayMethods", ($http) => {
 		var myCodeMirror = CodeMirror(document.getElementById("code"), {
 			 lineNumbers: true, 
-			 theme: "dracula"
+			 theme: "dracula",
+			 gutters: ["CodeMirror-lint-markers"],
+			 lint: true
 		});
+		myCodeMirror.setValue("/*jshint esversion: 6*/\n");
  		const ESplayMethods = {
- 			enableTextareaTab($){
- 				$("textarea").keydown(function(e) {
- 					if(e.keycode === 9){
- 				        var start = this.selectionStart;
- 				        var end = this.selectionEnd;
-
- 				        var $this = $(this);
-
- 				        $this.val($this.val().substring(0, start)
- 				                    + "\t"
- 				                    + $this.val().substring(end));
-
- 				        this.selectionStart = this.selectionEnd = start + 1;
-
- 				        return false;
- 				    }
- 				});
- 			},
  			transpile($scope, $http, called){
  				return () => {
  					const message = {code: myCodeMirror.getValue() };

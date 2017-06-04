@@ -3,6 +3,7 @@ block head
 	title="ESplay"
 	link(rel="stylesheet" href="/codemirror/lib/codemirror.css")
 	link(rel="stylesheet" href="/codemirror/theme/dracula.css")
+	link(rel="stylesheet" href="/codemirror/addon/lint/lint.css")
 	link(rel="stylesheet", href="/css/ESplay.css")
 block content
 	body(ng-app="ESplayApp")
@@ -11,4 +12,7 @@ block content
 			include partials/esplay
 	script(src="/codemirror/lib/codemirror.js")
 	script(src="/codemirror/mode/javascript/javascript.js")
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.9.4/jshint.min.js")
+	script(src="/codemirror/addon/lint/lint.js")
+	script(src="/codemirror/addon/lint/javascript-lint.js")
 	script(src="/build/ESplay.js")
