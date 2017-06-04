@@ -9,6 +9,7 @@
 	font-size: 1.2em;
 }
 .navbar a{
+	color: rgba(40,42,54,1) !important;
 	cursor: pointer;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -16,5 +17,9 @@
 	-moz-user-select: none; 
 	-ms-user-select: none; 
 	user-select: none;
+	font-weight: lighter !important;
+	transition: color .2s ease-in-out;
 }
-
+.navbar a:hover{
+	color: rgba(40,42,54,.4) !important;
+}
