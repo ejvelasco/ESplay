@@ -5,7 +5,7 @@ body{
 
 #code{
   width: 100% !important;
-  background-color: white !important;
+  background-color: black !important;
   /*border-right: 1px solid rgba(255,255,255,.3) !important;*/
   font-size: 1.1em !important;
 }
@@ -16,7 +16,7 @@ body{
 iframe{
   padding: 15px;
   width: 100%;
-  background-color: rgba(0,31,64, .6) !important;
+  background-color: rgba(1,85,174, .5) !important;
 }
 p{
   padding: 5px !important;
@@ -45,10 +45,10 @@ p{
   height : 80% !important;
 }
 .left{
-	background-color: white;
+	background-color: black;
 }
 .right{
-	background-color: white;
+	background-color: black;
 }
 @media (max-width: 1200px) {
   .left{

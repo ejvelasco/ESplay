@@ -1,27 +1,41 @@
 "use strict";
 
-module.exports = (app, $, JSHINT) => {	
+module.exports = (app, $, JSHINT, examplesES6) => {	
 
 	app.factory("ESplayMethods", ($http) => {
-		var myCodeMirror = CodeMirror(document.getElementById("code"), {
-			 lineNumbers: true, 
-			 theme: "dracula",
-			 gutters: ["CodeMirror-lint-markers"],
-			 lint: true
+		//set up editor
+		const myCodeMirror = CodeMirror(document.getElementById("code"), {
+			lineNumbers: true, 
+			theme: "dracula",
+			gutters: ["CodeMirror-lint-markers"],
+			lint: true
 		});
 		myCodeMirror.setValue("/*jshint esversion: 6*/\n");
+ 		//ESplay methods
  		const ESplayMethods = {
+ 			
+ 			setUpExamples($scope){
+ 				$scope.examplesES6 = [];
+ 				for( let example of examplesES6 ){
+ 					$scope.examplesES6.push(example);
+ 				}
+ 			},
+ 			selectExample(){
+ 				console.log(examplesES6);
+ 			},
+
  			transpile($scope, $http, called){
+ 				
  				return () => {
+ 					
  					const message = {code: myCodeMirror.getValue() };
- 					console.log(message)
  					$http.post('/transpile', message)
- 					.then((res) => {
+ 					.then((res) => {	
  						const data = res.data;
- 						let code = data.result.code;
- 						let precode;
- 						if(!called){
- 							precode = `let logs = [];
+ 						const code = data.result.code;
+ 						let output;
+ 						if ( !called ) {
+ 							output = `let logs = [];
  							let log = console.log;
  							console.log = function(){
  							   logs.push(arguments);
@@ -35,8 +49,8 @@ module.exports = (app, $, JSHINT) => {
  								para.appendChild(t); 
  								document.body.appendChild(para);
  							}`;
- 						} else{
- 							precode = `
+ 						} else {
+ 							output = `
  							logs = [];
  							${code}                                      
  							for(let i = 0; i < logs.length; i++){
@@ -47,18 +61,18 @@ module.exports = (app, $, JSHINT) => {
  								document.body.appendChild(para);
  							}`;
  						}
- 						
- 						window.frames[0].document.open();
- 						window.frames[0].document.write("<!DOCTYPE html>");
-				        window.frames[0].document.write("<html>");
-				        window.frames[0].document.write("<head>");
-				        window.frames[0].document.write("<link rel='stylesheet' href='/css/main.css'>");
-				        window.frames[0].document.write("</head>");
-				        window.frames[0].document.write("<body>");
-				        window.frames[0].document.write("<script type='text/javascript'>" + precode + "</script>");
-				        window.frames[0].document.write("</body>");
-				        window.frames[0].document.write("</html>");
-				        window.frames[0].document.close();
+ 						const frame = window.frames[0];; 
+ 						frame.document.open();
+ 						frame.document.write("<!DOCTYPE html>");
+				        frame.document.write("<html>");
+				        frame.document.write("<head>");
+				        frame.document.write("<link rel='stylesheet' href='/css/main.css'>");
+				        frame.document.write("</head>");
+				        frame.document.write("<body>");
+				        frame.document.write("<script type='text/javascript'>" + output + "</script>");
+				        frame.document.write("</body>");
+				        frame.document.write("</html>");
+				        frame.document.close();
 						called = true;
  					});	
  				}

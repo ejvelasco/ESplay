@@ -70703,22 +70703,34 @@ function hasOwnProperty(obj, prop) {
 	var angular = require("angular");
 	var $ = global.jQuery = require('jquery');
 	var JSHINT = require("jshint").JSHINT;
+	var examplesES6 = require("./examplesES6");
 	//set up angular application
 	var ESplayApp = angular.module("ESplayApp", []);
-	require("./ESplayMethods")(ESplayApp, $, JSHINT);
-	require("./transpileCtrl")(ESplayApp, $);
+	require("./ESplayMethods")(ESplayApp, $, JSHINT, examplesES6);
+	require("./ESplayCtrl")(ESplayApp, $);
 	//bootstrap
 	require("bootstrap");
-	require("./numberText");
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ESplayMethods":40,"./numberText":41,"./transpileCtrl":42,"angular":2,"bootstrap":4,"jquery":20,"jshint":25}],40:[function(require,module,exports){
+},{"./ESplayCtrl":40,"./ESplayMethods":41,"./examplesES6":42,"angular":2,"bootstrap":4,"jquery":20,"jshint":25}],40:[function(require,module,exports){
 "use strict";
 
-module.exports = function (app, $, JSHINT) {
+module.exports = function (app, $) {
+
+	app.controller("ESplayCtrl", ["$scope", "$http", "ESplayMethods", function ($scope, $http, ESplayMethods) {
+		ESplayMethods.setUpExamples($scope);
+		$scope.transpile = ESplayMethods.transpile($scope, $http, false);
+	}]);
+};
+
+},{}],41:[function(require,module,exports){
+"use strict";
+
+module.exports = function (app, $, JSHINT, examplesES6) {
 
   app.factory("ESplayMethods", function ($http) {
+    //set up editor
     var myCodeMirror = CodeMirror(document.getElementById("code"), {
       lineNumbers: true,
       theme: "dracula",
@@ -70726,32 +70738,64 @@ module.exports = function (app, $, JSHINT) {
       lint: true
     });
     myCodeMirror.setValue("/*jshint esversion: 6*/\n");
+    //ESplay methods
     var ESplayMethods = {
+      setUpExamples: function setUpExamples($scope) {
+        $scope.examplesES6 = [];
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = examplesES6[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var example = _step.value;
+
+            $scope.examplesES6.push(example);
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+      },
+      selectExample: function selectExample() {
+        console.log(examplesES6);
+      },
       transpile: function transpile($scope, $http, called) {
+
         return function () {
+
           var message = { code: myCodeMirror.getValue() };
-          console.log(message);
           $http.post('/transpile', message).then(function (res) {
             var data = res.data;
             var code = data.result.code;
-            var precode = void 0;
+            var output = void 0;
             if (!called) {
-              precode = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
+              output = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
             } else {
-              precode = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");   \n \t\t\t\t\t\t\t\tpara.className += ' output';               \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
+              output = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");   \n \t\t\t\t\t\t\t\tpara.className += ' output';               \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
             }
-
-            window.frames[0].document.open();
-            window.frames[0].document.write("<!DOCTYPE html>");
-            window.frames[0].document.write("<html>");
-            window.frames[0].document.write("<head>");
-            window.frames[0].document.write("<link rel='stylesheet' href='/css/main.css'>");
-            window.frames[0].document.write("</head>");
-            window.frames[0].document.write("<body>");
-            window.frames[0].document.write("<script type='text/javascript'>" + precode + "</script>");
-            window.frames[0].document.write("</body>");
-            window.frames[0].document.write("</html>");
-            window.frames[0].document.close();
+            var frame = window.frames[0];;
+            frame.document.open();
+            frame.document.write("<!DOCTYPE html>");
+            frame.document.write("<html>");
+            frame.document.write("<head>");
+            frame.document.write("<link rel='stylesheet' href='/css/main.css'>");
+            frame.document.write("</head>");
+            frame.document.write("<body>");
+            frame.document.write("<script type='text/javascript'>" + output + "</script>");
+            frame.document.write("</body>");
+            frame.document.write("</html>");
+            frame.document.close();
             called = true;
           });
         };
@@ -70761,164 +70805,17 @@ module.exports = function (app, $, JSHINT) {
   });
 };
 
-},{}],41:[function(require,module,exports){
-"use strict";
-
-/*
- * NumberedTextarea - jQuery Plugin
- * Textarea with line numbering
- *
- * Copyright (c) 2015 Dariusz Arciszewski
- *
- * Requires: jQuery v2.0+
- *
- * Licensed under the GPL licenses:
- *   http://www.gnu.org/licenses/gpl.html
- */
-
-(function ($) {
-
-    $.fn.numberedtextarea = function (options) {
-
-        var settings = $.extend({
-            color: null, // Font color
-            borderColor: null, // Border color
-            class: null, // Add class to the 'numberedtextarea-wrapper'
-            allowTabChar: false // If true Tab key creates indentation
-        }, options);
-
-        this.each(function () {
-            if (this.nodeName.toLowerCase() !== "textarea") {
-                console.log('This is not a <textarea>, so no way Jose...');
-                return false;
-            }
-
-            addWrapper(this, settings);
-            addLineNumbers(this, settings);
-
-            if (settings.allowTabChar) {
-                $(this).allowTabChar();
-            }
-        });
-
-        return this;
-    };
-
-    $.fn.allowTabChar = function () {
-        if (this.jquery) {
-            this.each(function () {
-                if (this.nodeType == 1) {
-                    var nodeName = this.nodeName.toLowerCase();
-                    if (nodeName == "textarea" || nodeName == "input" && this.type == "text") {
-                        allowTabChar(this);
-                    }
-                }
-            });
-        }
-        return this;
-    };
-
-    function addWrapper(element, settings) {
-        var wrapper = $('<div class="numberedtextarea-wrapper"></div>').insertAfter(element);
-        $(element).detach().appendTo(wrapper);
-    }
-
-    function addLineNumbers(element, settings) {
-        element = $(element);
-
-        var wrapper = element.parents('.numberedtextarea-wrapper');
-
-        // Get textarea styles to implement it on line numbers div
-        var paddingLeft = parseFloat(element.css('padding-left'));
-        var paddingTop = parseFloat(element.css('padding-top'));
-        var paddingBottom = parseFloat(element.css('padding-bottom'));
-
-        var lineNumbers = $('<div class="numberedtextarea-line-numbers"></div>').insertAfter(element);
-
-        element.css({
-            paddingLeft: paddingLeft + lineNumbers.width() + 'px'
-        }).on('input propertychange change keyup paste', function () {
-            renderLineNumbers(element, settings);
-        }).on('scroll', function () {
-            scrollLineNumbers(element, settings);
-        });
-
-        lineNumbers.css({
-            paddingLeft: paddingLeft + 'px',
-            paddingTop: paddingTop + 'px',
-            lineHeight: element.css('line-height'),
-            fontFamily: element.css('font-family'),
-            width: lineNumbers.width() - paddingLeft + 'px'
-        });
-
-        element.trigger('change');
-    }
-
-    function renderLineNumbers(element, settings) {
-        element = $(element);
-
-        var linesDiv = element.parent().find('.numberedtextarea-line-numbers');
-        var count = element.val().split("\n").length;
-        var paddingBottom = parseFloat(element.css('padding-bottom'));
-
-        linesDiv.find('.numberedtextarea-number').remove();
-
-        for (var i = 1; i <= count; i++) {
-            var line = $('<div class="numberedtextarea-number numberedtextarea-number-' + i + '">' + i + '</div>').appendTo(linesDiv);
-
-            if (i === count) {
-                line.css('margin-bottom', paddingBottom + 'px');
-            }
-        }
-    }
-
-    function scrollLineNumbers(element, settings) {
-        element = $(element);
-        var linesDiv = element.parent().find('.numberedtextarea-line-numbers');
-        linesDiv.scrollTop(element.scrollTop());
-    }
-
-    function pasteIntoInput(el, text) {
-        el.focus();
-        if (typeof el.selectionStart == "number") {
-            var val = el.value;
-            var selStart = el.selectionStart;
-            el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
-            el.selectionEnd = el.selectionStart = selStart + text.length;
-        } else if (typeof document.selection != "undefined") {
-            var textRange = document.selection.createRange();
-            textRange.text = text;
-            textRange.collapse(false);
-            textRange.select();
-        }
-    }
-
-    function allowTabChar(el) {
-        $(el).keydown(function (e) {
-            if (e.which == 9) {
-                pasteIntoInput(this, "\t");
-                return false;
-            }
-        });
-
-        // For Opera, which only allows suppression of keypress events, not keydown
-        $(el).keypress(function (e) {
-            if (e.which == 9) {
-                return false;
-            }
-        });
-    }
-})(jQuery);
-
 },{}],42:[function(require,module,exports){
 "use strict";
 
-module.exports = function (app, $) {
-
-	app.controller("transpileCtrl", ["$scope", "$http", "ESplayMethods", function ($scope, $http, ESplayMethods) {
-		// $scope.lint = ESplayMethods.lint();
-		$scope.transpile = ESplayMethods.transpile($scope, $http, false);
-	}]);
-};
+module.exports = [{
+	title: "Arrow Functions",
+	description: "Arrows are a function shorthand using the => syntax. They are syntactically similar to the related feature in C#, Java 8 and CoffeeScript. They support both statement block bodies as well as expression bodies which return the value of the expression. Unlike functions, arrows share the same lexical this as their surrounding code.",
+	code: "\n\t\t\t// Expression bodies\n\t\t\tvar odds = evens.map(v => v + 1);\n\t\t\tvar nums = evens.map((v, i) => v + i);\n\t\t\tvar pairs = evens.map(v => ({even: v, odd: v + 1}));\n\n\t\t\t// Statement bodies\n\t\t\tnums.forEach(v => {\n\t\t\t  if (v % 5 === 0)\n\t\t\t    fives.push(v);\n\t\t\t});\n\n\t\t\t// Lexical this\n\t\t\tvar bob = {\n\t\t\t  _name: \"Bob\",\n\t\t\t  _friends: [],\n\t\t\t  printFriends() {\n\t\t\t    this._friends.forEach(f =>\n\t\t\t      console.log(this._name + \" knows \" + f));\n\t\t\t  }\n\t\t\t}\n\t\t"
+}, {
+	title: "Classes",
+	description: "ES6 classes are a simple sugar over the prototype-based OO pattern. Having a single convenient declarative form makes class patterns easier to use, and encourages interoperability. Classes support prototype-based inheritance, super calls, instance and static methods and constructors.",
+	code: "\n\t\t\tclass SkinnedMesh extends THREE.Mesh {\n\t\t\t  constructor(geometry, materials) {\n\t\t\t    super(geometry, materials);\n\n\t\t\t    this.idMatrix = SkinnedMesh.defaultMatrix();\n\t\t\t    this.bones = [];\n\t\t\t    this.boneMatrices = [];\n\t\t\t    //...\n\t\t\t  }\n\t\t\t  update(camera) {\n\t\t\t    //...\n\t\t\t    super.update();\n\t\t\t  }\n\t\t\t  get boneCount() {\n\t\t\t    return this.bones.length;\n\t\t\t  }\n\t\t\t  set matrixType(matrixType) {\n\t\t\t    this.idMatrix = SkinnedMesh[matrixType]();\n\t\t\t  }\n\t\t\t  static defaultMatrix() {\n\t\t\t    return new THREE.Matrix4();\n\t\t\t  }\n\t\t\t}\n\t\t"
+}];
 
 },{}]},{},[39]);

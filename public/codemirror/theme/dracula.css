@@ -9,11 +9,11 @@
 
 
 .cm-s-dracula.CodeMirror, .cm-s-dracula .CodeMirror-gutters {
-  background-color: rgba(0,31,64, .7) !important;
+  background-color: rgba(1,85,174, .3) !important;
   color: #f8f8f2 !important;
   border: none;
 }
-.cm-s-dracula .CodeMirror-gutters { background-color: rgba(0,31,64, .15) !important; color: rgba(255,255,255,.2) !important; border-right: 1px solid rgba(255,255,255,.3) !important;}
+.cm-s-dracula .CodeMirror-gutters { background-color: rgba(1,85,174, .15) !important; !important; color: rgba(255,255,255,.2) !important; border-right: 1px solid rgba(255,255,255,.3) !important;}
 .cm-s-dracula .CodeMirror-cursor { border-left: solid thin #f8f8f0; }
 .cm-s-dracula .CodeMirror-linenumber { color: rgba(255,255,255,.3) !important; }
 .cm-s-dracula .CodeMirror-selected { background: rgba(255, 255, 255, 0.15); }
