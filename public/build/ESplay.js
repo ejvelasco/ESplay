@@ -70721,6 +70721,9 @@ module.exports = function (app, $) {
 	app.controller("ESplayCtrl", ["$scope", "$http", "ESplayMethods", function ($scope, $http, ESplayMethods) {
 		ESplayMethods.setUpExamples($scope);
 		$scope.transpile = ESplayMethods.transpile($scope, $http, false);
+		$scope.selectExample = function (example) {
+			ESplayMethods.selectExample(example);
+		};
 	}]);
 };
 
@@ -70767,8 +70770,9 @@ module.exports = function (app, $, JSHINT, examplesES6) {
           }
         }
       },
-      selectExample: function selectExample() {
-        console.log(examplesES6);
+      selectExample: function selectExample(example) {
+        var str = "/*jshint esversion: 6*/\n\n";
+        myCodeMirror.setValue(str + "/* " + example.desc + " */" + " \n \t\t\t\t\t" + example.code);
       },
       transpile: function transpile($scope, $http, called) {
 
@@ -70810,12 +70814,12 @@ module.exports = function (app, $, JSHINT, examplesES6) {
 
 module.exports = [{
 	title: "Arrow Functions",
-	description: "Arrows are a function shorthand using the => syntax. They are syntactically similar to the related feature in C#, Java 8 and CoffeeScript. They support both statement block bodies as well as expression bodies which return the value of the expression. Unlike functions, arrows share the same lexical this as their surrounding code.",
-	code: "\n\t\t\t// Expression bodies\n\t\t\tvar odds = evens.map(v => v + 1);\n\t\t\tvar nums = evens.map((v, i) => v + i);\n\t\t\tvar pairs = evens.map(v => ({even: v, odd: v + 1}));\n\n\t\t\t// Statement bodies\n\t\t\tnums.forEach(v => {\n\t\t\t  if (v % 5 === 0)\n\t\t\t    fives.push(v);\n\t\t\t});\n\n\t\t\t// Lexical this\n\t\t\tvar bob = {\n\t\t\t  _name: \"Bob\",\n\t\t\t  _friends: [],\n\t\t\t  printFriends() {\n\t\t\t    this._friends.forEach(f =>\n\t\t\t      console.log(this._name + \" knows \" + f));\n\t\t\t  }\n\t\t\t}\n\t\t"
+	desc: "An arrow function expression has a shorter syntax than a function expression\nand does not bind its own this, arguments, super, or new.target. These function \nexpressions are best suited for non-method functions, and they cannot be used as \nconstructors.",
+	code: "\nvar materials = ['Hydrogen', 'Helium', 'Lithium', 'Beryllium'];\n\nvar materialsLength1 = materials.map(function(material) { \n  return material.length; \n}); // [8,6,7,9]\n\nvar materialsLength2 = materials.map(material => material.length); // [8,6,7,9]\n\nclass Jedi {\n\tconstructor(name) {\n\t\tthis.name = name;\t\t\n\t}\n  \tswitchToDarkSide(){ \n  \t\treturn () => {\n  \t\t\tthis.name = \"Darth Vader\"; // |this| refers to Jedi instance\t\n  \t\t};\n  \t}\n}\n\nvar jedi = new Jedi(\"Anakin Skywalker\");\nconsole.log(jedi.name); // Anakin Skywalker\nvar switchToDarkSide = jedi.switchToDarkSide();\nswitchToDarkSide();\nconsole.log(jedi.name); // Darth Vader\n"
 }, {
 	title: "Classes",
-	description: "ES6 classes are a simple sugar over the prototype-based OO pattern. Having a single convenient declarative form makes class patterns easier to use, and encourages interoperability. Classes support prototype-based inheritance, super calls, instance and static methods and constructors.",
-	code: "\n\t\t\tclass SkinnedMesh extends THREE.Mesh {\n\t\t\t  constructor(geometry, materials) {\n\t\t\t    super(geometry, materials);\n\n\t\t\t    this.idMatrix = SkinnedMesh.defaultMatrix();\n\t\t\t    this.bones = [];\n\t\t\t    this.boneMatrices = [];\n\t\t\t    //...\n\t\t\t  }\n\t\t\t  update(camera) {\n\t\t\t    //...\n\t\t\t    super.update();\n\t\t\t  }\n\t\t\t  get boneCount() {\n\t\t\t    return this.bones.length;\n\t\t\t  }\n\t\t\t  set matrixType(matrixType) {\n\t\t\t    this.idMatrix = SkinnedMesh[matrixType]();\n\t\t\t  }\n\t\t\t  static defaultMatrix() {\n\t\t\t    return new THREE.Matrix4();\n\t\t\t  }\n\t\t\t}\n\t\t"
+	desc: "JavaScript classes introduced in ECMAScript 2015 are primarily syntactical \nsugar over JavaScript's existing prototype-based inheritance. The class syntax is not \nintroducing a new object-oriented inheritance model to JavaScript. JavaScript classes \nprovide a much simpler and clearer syntax to create objects and deal with inheritance.",
+	code: "\nclass Animal { \n\tconstructor(name) {\n\t\tthis.name = name;\n\t\tthis.breed = \"German Shepherd\";\n\t}\n\tswitchBreed(){\n\t\tthis.breed = \"Chihuahua\";\n\t}\n\tspeak() {\n\t\tconsole.log(this.name + ' makes a noise.');\n\t}\n}\n\nclass Dog extends Animal {\n\tspeak() {\n\t\tconsole.log(this.name + ' the ' + this.breed + ' barks.');\n\t}\n}\n\nvar dog = new Dog('Mitzie');\ndog.speak(); // Mitzie the German Shepherd barks.\ndog.switchBreed(); \ndog.speak(); // Mitzie the Chihuahua barks."
 }];
 
 },{}]},{},[39]);

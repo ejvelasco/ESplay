@@ -20,8 +20,12 @@ module.exports = (app, $, JSHINT, examplesES6) => {
  					$scope.examplesES6.push(example);
  				}
  			},
- 			selectExample(){
- 				console.log(examplesES6);
+ 			selectExample(example){
+ 				const str = "/*jshint esversion: 6*/\n\n";
+ 				myCodeMirror.setValue(
+ 					`${str + "/* " + example.desc + " */"} 
+ 					${example.code}`
+ 				);
  			},
 
  			transpile($scope, $http, called){

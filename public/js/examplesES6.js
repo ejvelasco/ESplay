@@ -3,57 +3,66 @@
 module.exports = [
 	{
 		title: "Arrow Functions",
-		description: "Arrows are a function shorthand using the => syntax. They are syntactically similar to the related feature in C#, Java 8 and CoffeeScript. They support both statement block bodies as well as expression bodies which return the value of the expression. Unlike functions, arrows share the same lexical this as their surrounding code.",
+		desc: `An arrow function expression has a shorter syntax than a function expression
+and does not bind its own this, arguments, super, or new.target. These function 
+expressions are best suited for non-method functions, and they cannot be used as 
+constructors.`,
 		code: `
-			// Expression bodies
-			var odds = evens.map(v => v + 1);
-			var nums = evens.map((v, i) => v + i);
-			var pairs = evens.map(v => ({even: v, odd: v + 1}));
+var materials = ['Hydrogen', 'Helium', 'Lithium', 'Beryllium'];
 
-			// Statement bodies
-			nums.forEach(v => {
-			  if (v % 5 === 0)
-			    fives.push(v);
-			});
+var materialsLength1 = materials.map(function(material) { 
+  return material.length; 
+}); // [8,6,7,9]
 
-			// Lexical this
-			var bob = {
-			  _name: "Bob",
-			  _friends: [],
-			  printFriends() {
-			    this._friends.forEach(f =>
-			      console.log(this._name + " knows " + f));
-			  }
-			}
-		`
+var materialsLength2 = materials.map(material => material.length); // [8,6,7,9]
+
+class Jedi {
+	constructor(name) {
+		this.name = name;		
+	}
+  	switchToDarkSide(){ 
+  		return () => {
+  			this.name = "Darth Vader"; // |this| refers to Jedi instance	
+  		};
+  	}
+}
+
+var jedi = new Jedi("Anakin Skywalker");
+console.log(jedi.name); // Anakin Skywalker
+var switchToDarkSide = jedi.switchToDarkSide();
+switchToDarkSide();
+console.log(jedi.name); // Darth Vader
+`
 	}, 
 	{
 		title: "Classes",
-		description: "ES6 classes are a simple sugar over the prototype-based OO pattern. Having a single convenient declarative form makes class patterns easier to use, and encourages interoperability. Classes support prototype-based inheritance, super calls, instance and static methods and constructors.",
+		desc: `JavaScript classes introduced in ECMAScript 2015 are primarily syntactical 
+sugar over JavaScript's existing prototype-based inheritance. The class syntax is not 
+introducing a new object-oriented inheritance model to JavaScript. JavaScript classes 
+provide a much simpler and clearer syntax to create objects and deal with inheritance.`,
 		code: `
-			class SkinnedMesh extends THREE.Mesh {
-			  constructor(geometry, materials) {
-			    super(geometry, materials);
+class Animal { 
+	constructor(name) {
+		this.name = name;
+		this.breed = "German Shepherd";
+	}
+	switchBreed(){
+		this.breed = "Chihuahua";
+	}
+	speak() {
+		console.log(this.name + ' makes a noise.');
+	}
+}
 
-			    this.idMatrix = SkinnedMesh.defaultMatrix();
-			    this.bones = [];
-			    this.boneMatrices = [];
-			    //...
-			  }
-			  update(camera) {
-			    //...
-			    super.update();
-			  }
-			  get boneCount() {
-			    return this.bones.length;
-			  }
-			  set matrixType(matrixType) {
-			    this.idMatrix = SkinnedMesh[matrixType]();
-			  }
-			  static defaultMatrix() {
-			    return new THREE.Matrix4();
-			  }
-			}
-		`
+class Dog extends Animal {
+	speak() {
+		console.log(this.name + ' the ' + this.breed + ' barks.');
+	}
+}
+
+var dog = new Dog('Mitzie');
+dog.speak(); // Mitzie the German Shepherd barks.
+dog.switchBreed(); 
+dog.speak(); // Mitzie the Chihuahua barks.`
 	}
 ];
