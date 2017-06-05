@@ -70738,12 +70738,15 @@ module.exports = function (app, $, JSHINT) {
             if (!called) {
               precode = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
             } else {
-              precode = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
+              precode = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");   \n \t\t\t\t\t\t\t\tpara.className += ' output';               \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
             }
 
             window.frames[0].document.open();
             window.frames[0].document.write("<!DOCTYPE html>");
             window.frames[0].document.write("<html>");
+            window.frames[0].document.write("<head>");
+            window.frames[0].document.write("<link rel='stylesheet' href='/css/main.css'>");
+            window.frames[0].document.write("</head>");
             window.frames[0].document.write("<body>");
             window.frames[0].document.write("<script type='text/javascript'>" + precode + "</script>");
             window.frames[0].document.write("</body>");

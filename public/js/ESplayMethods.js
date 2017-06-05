@@ -40,7 +40,8 @@ module.exports = (app, $, JSHINT) => {
  							logs = [];
  							${code}                                      
  							for(let i = 0; i < logs.length; i++){
- 								para = document.createElement("P");                       
+ 								para = document.createElement("P");   
+ 								para.className += ' output';               
  								t = document.createTextNode(logs[i][0]);      
  								para.appendChild(t); 
  								document.body.appendChild(para);
@@ -50,6 +51,9 @@ module.exports = (app, $, JSHINT) => {
  						window.frames[0].document.open();
  						window.frames[0].document.write("<!DOCTYPE html>");
 				        window.frames[0].document.write("<html>");
+				        window.frames[0].document.write("<head>");
+				        window.frames[0].document.write("<link rel='stylesheet' href='/css/main.css'>");
+				        window.frames[0].document.write("</head>");
 				        window.frames[0].document.write("<body>");
 				        window.frames[0].document.write("<script type='text/javascript'>" + precode + "</script>");
 				        window.frames[0].document.write("</body>");
