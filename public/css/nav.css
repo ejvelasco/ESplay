@@ -2,11 +2,11 @@
 	padding: 0 !important;
 	margin: 0 !important;
 	border: none !important;
-	position: fixed !important;
 	z-index: 9999 !important;
 	width: 100% !important;
 	font-family: "Roboto", sans-serif !important;
 	font-size: 1.2em;
+	height: 5% !important;
 }
 .navbar a{
 	color: rgba(40,42,54,1) !important;

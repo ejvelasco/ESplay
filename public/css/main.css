@@ -1,17 +1,19 @@
 body{
   padding: 0 !important;
   margin: 0 !important;
-  overflow: hidden !important;
 }
+
 #code{
-  margin-top: 50px !important;
   width: 100% !important;
   background-color: white !important;
   /*border-right: 1px solid rgba(255,255,255,.3) !important;*/
   font-size: 1.1em !important;
 }
+.row{
+  padding: 0 !important;
+  margin: 0 !important;
+}
 iframe{
-  margin-top: 50px;
   padding: 15px;
   width: 100%;
   background-color: rgba(0,31,64, .6) !important;
@@ -31,7 +33,6 @@ p{
   height: 30px !important;
   line-height: 30px !important;
   padding-left: 10px !important;
-  margin-top: 50px !important;
   text-transform: uppercase !important;
   background-color: transparent !important;
   font-family: "Roboto", sans-serif !important;
@@ -41,7 +42,7 @@ p{
 	padding: 0 !important;
 	margin: 0 !important;
   display : flex;
-  height : 100%;
+  height : 80% !important;
 }
 .left{
 	background-color: white;
