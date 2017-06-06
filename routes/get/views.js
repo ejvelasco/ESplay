@@ -1,4 +1,4 @@
-module.exports = (app, babel) => {
+module.exports = (app, babel, util) => {
 	app.get("/", (req, res) => {
 	    	res.render("main");
   	});
@@ -6,6 +6,6 @@ module.exports = (app, babel) => {
 		const result = babel.transform(req.body.code, {
 					presets: ["es2015"]
 				});
-	    res.json({result: result});
+	    res.json(JSON.decycle({result: result}));
   	});
 };

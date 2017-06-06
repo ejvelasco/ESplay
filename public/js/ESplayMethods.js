@@ -3,7 +3,7 @@
 module.exports = (app, $, JSHINT, examplesES6) => {	
 
 	app.factory("ESplayMethods", ($http) => {
-		//set up editor
+	
 		const myCodeMirror = CodeMirror(document.getElementById("code"), {
 			theme: "dracula",
 			gutters: ["CodeMirror-lint-markers"],
@@ -12,9 +12,14 @@ module.exports = (app, $, JSHINT, examplesES6) => {
 			autoCloseBrackets: true
 		});
 		myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
- 		//ESplay methods
+ 		
  		const ESplayMethods = {
- 			
+ 			clear(){
+ 				return () =>{
+ 					myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");	
+ 					window.frames[0].document.body.innerHTML = "";
+ 				}
+ 			},
  			setUpExamples($scope){
  				$scope.examplesES6 = [];
  				for( let example of examplesES6 ){
@@ -27,6 +32,7 @@ module.exports = (app, $, JSHINT, examplesES6) => {
  					`${str + "/* " + example.desc + " */"} 
  					${example.code}`
  				);
+ 				window.frames[0].document.body.innerHTML = "";
  			},
 
  			transpile($scope, $http, called){
@@ -58,7 +64,7 @@ module.exports = (app, $, JSHINT, examplesES6) => {
  									}
  									logs = [];
  								}
- 							}, 100)`;
+ 							}, 30)`;
  						} else {
  							output = `
  							logs = [];
@@ -73,9 +79,9 @@ module.exports = (app, $, JSHINT, examplesES6) => {
  									}
  									logs = [];
  								}
- 							}, 100)`;
+ 							}, 30)`;
  						}
- 						const frame = window.frames[0];; 
+ 						const frame = window.frames[0]; 
  						frame.document.open();
  						frame.document.write("<!DOCTYPE html>");
 				        frame.document.write("<html>");

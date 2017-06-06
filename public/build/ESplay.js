@@ -70720,6 +70720,7 @@ module.exports = function (app, $) {
 
 	app.controller("ESplayCtrl", ["$scope", "$http", "ESplayMethods", function ($scope, $http, ESplayMethods) {
 		ESplayMethods.setUpExamples($scope);
+		$scope.clear = ESplayMethods.clear();
 		$scope.transpile = ESplayMethods.transpile($scope, $http, false);
 		$scope.selectExample = function (example) {
 			ESplayMethods.selectExample(example);
@@ -70733,7 +70734,7 @@ module.exports = function (app, $) {
 module.exports = function (app, $, JSHINT, examplesES6) {
 
   app.factory("ESplayMethods", function ($http) {
-    //set up editor
+
     var myCodeMirror = CodeMirror(document.getElementById("code"), {
       theme: "dracula",
       gutters: ["CodeMirror-lint-markers"],
@@ -70742,8 +70743,14 @@ module.exports = function (app, $, JSHINT, examplesES6) {
       autoCloseBrackets: true
     });
     myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
-    //ESplay methods
+
     var ESplayMethods = {
+      clear: function clear() {
+        return function () {
+          myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
+          window.frames[0].document.body.innerHTML = "";
+        };
+      },
       setUpExamples: function setUpExamples($scope) {
         $scope.examplesES6 = [];
         var _iteratorNormalCompletion = true;
@@ -70774,6 +70781,7 @@ module.exports = function (app, $, JSHINT, examplesES6) {
       selectExample: function selectExample(example) {
         var str = "/*jshint esversion: 6*/\n\n";
         myCodeMirror.setValue(str + "/* " + example.desc + " */" + " \n \t\t\t\t\t" + example.code);
+        window.frames[0].document.body.innerHTML = "";
       },
       transpile: function transpile($scope, $http, called) {
 
@@ -70785,11 +70793,11 @@ module.exports = function (app, $, JSHINT, examplesES6) {
             var code = data.result.code;
             var output = void 0;
             if (!called) {
-              output = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 100)";
+              output = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 30)";
             } else {
-              output = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 100)";
+              output = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 30)";
             }
-            var frame = window.frames[0];;
+            var frame = window.frames[0];
             frame.document.open();
             frame.document.write("<!DOCTYPE html>");
             frame.document.write("<html>");
@@ -70813,6 +70821,7 @@ module.exports = function (app, $, JSHINT, examplesES6) {
 },{}],42:[function(require,module,exports){
 "use strict";
 
+var temp = "Hello ${name}, how are you ${time}?";
 module.exports = [{
 	title: "Arrow Functions",
 	desc: "An arrow function expression has a shorter syntax than a function expression\nand does not bind its own this, arguments, super, or new.target. These function \nexpressions are best suited for non-method functions, and they cannot be used as \nconstructors.",
@@ -70825,6 +70834,22 @@ module.exports = [{
 	title: "Enhanced Object Literals",
 	desc: "Object literals are extended to support shorthand for foo: foo \nassignments, defining methods, making super calls, and computing property \nnames with expressions. Together, these also bring object literals and class \ndeclarations closer together, and let object-based design benefit from some \nof the same conveniences.",
 	code: "\nvar printKeys = function(object){\n\tvar keys = Object.keys(object);\n\tfor(var i = 0; i < keys.length; i++){\n\t\tconsole.log(keys[i]);\n\t}\n};\nvar obj = {\n    // Shorthand for \u2018handler: handler\u2019\n    printKeys,\n    // Methods\n    toString() {\n    \t// Super calls\n     \treturn \"d \" + super.toString();\n    },\n    // Computed (dynamic) property names\n    [ 'prop_' + (() => 42)() ]: 42\n};\n\nobj.printKeys(obj);"
+}, {
+	title: "Template Literals",
+	desc: "Template literals are enclosed by the back-tick (`) character \ninstead of double or single quotes. Template literals can contain \nplace holders. These are indicated by the dollar sign and curly \nbraces. The expressions in the place holders and \nthe text between them get passed to a function. The default function \njust concatenates the parts into a single string. If there is an \nexpression preceding the template literal (tag here),  the template \nstring is called \"tagged template literal\". In that case, the tag \nexpression (usually a function) gets called with the processed template \nliteral, which you can then manipulate before outputting. To escape a \nback-tick in a template literal, put a backslash  before the back-tick.",
+	code: "\n// Multiline strings\nvar praise = `This is seriously\nso useful!`;\n\n// String interpolation\nvar name = \"Bob\", time = \"today\";\nvar greeting = `" + temp + "`;\nconsole.log(greeting);"
+}, {
+	title: "Destructuring",
+	desc: "The destructuring assignment syntax is a JavaScript expression \nthat makes it possible to unpack values from arrays, or properties \nfrom objects, into distinct variables.",
+	code: "\n// object matching\n// var { op: a, lhs: { op: b }, rhs: c } = getASTNode();\n\n// object matching shorthand\n// binds `op`, `lhs` and `rhs` in scope\n// var {op, lhs, rhs} = getASTNode();\n\n// list matching\nvar [a, , b] = [1,2,3];\n\nconsole.log(a + b);\n\n// Can be used in parameter position\nfunction g({name: x}) {\n  \tconsole.log(x);\n}\ng({name: 5});\n\n// Fail-soft destructuring\nvar [a] = [];\nconsole.log(a);\n// Fail-soft destructuring with defaults\nvar [a = 1] = [];\nconsole.log(a);"
+}, {
+	title: "Rest Parameters",
+	desc: "If the last named argument of a function is prefixed \nwith ..., it becomes an array whose elements from 0 (inclusive) \nto theArgs.length (exclusive) are supplied by the actual \narguments passed to the function.",
+	code: "\n//Add an arbitrary number of integers\nfunction addIntegers(...integers){\n\tif (integers.length === 0){\n  \treturn null;\n  }\n\treturn integers.reduce((a,b) => a + b);\n}\nconsole.log(addIntegers(1,1,2,3,5,8));"
+}, {
+	title: "Default Parameters",
+	desc: "In JavaScript, parameters of functions default to undefined. \nHowever, in some situations it might be useful to set a different \ndefault value. This is where default parameters can help. With \ndefault parameters in ES2015, the check in the function body is \nno longer necessary. Now, you can simply put 1 as the default value \nfor b in the function head:",
+	code: "\n//old\nfunction multiply(a, b) {\n  b = (typeof b !== 'undefined') ?  b : 1;\n  return a * b;\n}\n\n//new\nfunction multiply(a, b = 1) {\n  \treturn a * b;\n}\n\nconsole.log(multiply(5, 2)); \nconsole.log(multiply(5, 1)); \nconsole.log(multiply(5));"
 }];
 
 },{}]},{},[39]);

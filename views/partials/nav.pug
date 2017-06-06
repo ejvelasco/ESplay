@@ -18,6 +18,10 @@
 							li(role="separator" class="divider")
 							li
 								a(href="#") ES7 Example
+					li
+						a(ng-click="transpile()") #[span.glyphicon.glyphicon-play] Run
+					li
+						a(ng-click="clear()") #[span.glyphicon.glyphicon-erase] Clear
 					li(class="dropdown")
 						a(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") #[span.glyphicon.glyphicon-cog] Preferences
 						ul(class="dropdown-menu")
@@ -25,10 +29,4 @@
 								a(href="#") Load library...
 							li
 								a(href="#") Choose theme...
-					li
-						a(id="run" ng-click="transpile()") #[span.glyphicon.glyphicon-play] Run
-					//- li
-						a(href='#') #[span.glyphicon.glyphicon-floppy-disk] Save		 
-				//- ul.nav.navbar-nav.navbar-right
-					li
-						a(href='#') About
+				
