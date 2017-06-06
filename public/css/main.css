@@ -6,8 +6,9 @@ body{
 #code{
   width: 100% !important;
   background-color: black !important;
-  /*border-right: 1px solid rgba(255,255,255,.3) !important;*/
-  font-size: 1.1em !important;
+}
+.codemirror-lines{
+  margin-left: -20px !important;
 }
 .row{
   padding: 0 !important;
@@ -42,7 +43,7 @@ p{
 	padding: 0 !important;
 	margin: 0 !important;
   display : flex;
-  height : 80% !important;
+  height : 70% !important;
 }
 .left{
 	background-color: black;

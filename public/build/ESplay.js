@@ -70735,10 +70735,10 @@ module.exports = function (app, $, JSHINT, examplesES6) {
   app.factory("ESplayMethods", function ($http) {
     //set up editor
     var myCodeMirror = CodeMirror(document.getElementById("code"), {
-      lineNumbers: true,
       theme: "dracula",
       gutters: ["CodeMirror-lint-markers"],
-      lint: true
+      lint: true,
+      lineNumbers: true
     });
     myCodeMirror.setValue("/*jshint esversion: 6*/\n");
     //ESplay methods
@@ -70815,11 +70815,11 @@ module.exports = function (app, $, JSHINT, examplesES6) {
 module.exports = [{
 	title: "Arrow Functions",
 	desc: "An arrow function expression has a shorter syntax than a function expression\nand does not bind its own this, arguments, super, or new.target. These function \nexpressions are best suited for non-method functions, and they cannot be used as \nconstructors.",
-	code: "\nvar materials = ['Hydrogen', 'Helium', 'Lithium', 'Beryllium'];\n\nvar materialsLength1 = materials.map(function(material) { \n  return material.length; \n}); // [8,6,7,9]\n\nvar materialsLength2 = materials.map(material => material.length); // [8,6,7,9]\n\nclass Jedi {\n\tconstructor(name) {\n\t\tthis.name = name;\t\t\n\t}\n  \tswitchToDarkSide(){ \n  \t\treturn () => {\n  \t\t\tthis.name = \"Darth Vader\"; // |this| refers to Jedi instance\t\n  \t\t};\n  \t}\n}\n\nvar jedi = new Jedi(\"Anakin Skywalker\");\nconsole.log(jedi.name); // Anakin Skywalker\nvar switchToDarkSide = jedi.switchToDarkSide();\nswitchToDarkSide();\nconsole.log(jedi.name); // Darth Vader\n"
+	code: "\n//shorter syntax\nvar planets = ['Coruscant', 'Hoth', 'Tatooine', 'Kashyyyk'];\n\nvar planetsLenth1 = planets.map(function(planet) { \n  return planet.length; \n}); \n\nvar planetsLength2 = planets.map(planet => planet.length); \n\n//inherited this\nfunction Jedi(name) {\n\tthis.name = name;\n\tthis.switchToDarkSide = () => {\n\t\tthis.name = \"Darth Vader\"; // |this| refers to Jedi instance\n\t};\n}\n\nvar jedi = new Jedi(\"Anakin Skywalker\");\nconsole.log(jedi.name); // Anakin Skywalker\njedi.switchToDarkSide();\nconsole.log(jedi.name); // Darth Vader\n"
 }, {
 	title: "Classes",
 	desc: "JavaScript classes introduced in ECMAScript 2015 are primarily syntactical \nsugar over JavaScript's existing prototype-based inheritance. The class syntax is not \nintroducing a new object-oriented inheritance model to JavaScript. JavaScript classes \nprovide a much simpler and clearer syntax to create objects and deal with inheritance.",
-	code: "\nclass Animal { \n\tconstructor(name) {\n\t\tthis.name = name;\n\t\tthis.breed = \"German Shepherd\";\n\t}\n\tswitchBreed(){\n\t\tthis.breed = \"Chihuahua\";\n\t}\n\tspeak() {\n\t\tconsole.log(this.name + ' makes a noise.');\n\t}\n}\n\nclass Dog extends Animal {\n\tspeak() {\n\t\tconsole.log(this.name + ' the ' + this.breed + ' barks.');\n\t}\n}\n\nvar dog = new Dog('Mitzie');\ndog.speak(); // Mitzie the German Shepherd barks.\ndog.switchBreed(); \ndog.speak(); // Mitzie the Chihuahua barks."
+	code: "\nclass Animal { \n\tconstructor(name) {\n\t\tthis.name = name;\n\t\tthis.breed = \"German Shepherd\";\n\t}\n\tswitchBreed(){\n\t\tthis.breed = \"Chihuahua\";\n\t}\n\tspeak() {\n\t\tconsole.log(this.name + ' makes a noise.');\n\t}\n}\n\nclass Dog extends Animal {\n\tspeak() {\n\t\tconsole.log(this.name + ' the ' + this.breed + ' barks.');\n\t}\n}\n\nvar dog = new Dog('Macy');\ndog.speak(); // Macy the German Shepherd barks.\ndog.switchBreed(); \ndog.speak(); // Macy the Chihuahua barks."
 }];
 
 },{}]},{},[39]);

@@ -8,29 +8,26 @@ and does not bind its own this, arguments, super, or new.target. These function
 expressions are best suited for non-method functions, and they cannot be used as 
 constructors.`,
 		code: `
-var materials = ['Hydrogen', 'Helium', 'Lithium', 'Beryllium'];
+//shorter syntax
+var planets = ['Coruscant', 'Hoth', 'Tatooine', 'Kashyyyk'];
 
-var materialsLength1 = materials.map(function(material) { 
-  return material.length; 
-}); // [8,6,7,9]
+var planetsLenth1 = planets.map(function(planet) { 
+  return planet.length; 
+}); 
 
-var materialsLength2 = materials.map(material => material.length); // [8,6,7,9]
+var planetsLength2 = planets.map(planet => planet.length); 
 
-class Jedi {
-	constructor(name) {
-		this.name = name;		
-	}
-  	switchToDarkSide(){ 
-  		return () => {
-  			this.name = "Darth Vader"; // |this| refers to Jedi instance	
-  		};
-  	}
+//inherited this
+function Jedi(name) {
+	this.name = name;
+	this.switchToDarkSide = () => {
+		this.name = "Darth Vader"; // |this| refers to Jedi instance
+	};
 }
 
 var jedi = new Jedi("Anakin Skywalker");
 console.log(jedi.name); // Anakin Skywalker
-var switchToDarkSide = jedi.switchToDarkSide();
-switchToDarkSide();
+jedi.switchToDarkSide();
 console.log(jedi.name); // Darth Vader
 `
 	}, 
@@ -60,9 +57,9 @@ class Dog extends Animal {
 	}
 }
 
-var dog = new Dog('Mitzie');
-dog.speak(); // Mitzie the German Shepherd barks.
+var dog = new Dog('Macy');
+dog.speak(); // Macy the German Shepherd barks.
 dog.switchBreed(); 
-dog.speak(); // Mitzie the Chihuahua barks.`
+dog.speak(); // Macy the Chihuahua barks.`
 	}
 ];

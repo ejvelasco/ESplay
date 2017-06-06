@@ -5,10 +5,10 @@ module.exports = (app, $, JSHINT, examplesES6) => {
 	app.factory("ESplayMethods", ($http) => {
 		//set up editor
 		const myCodeMirror = CodeMirror(document.getElementById("code"), {
-			lineNumbers: true, 
 			theme: "dracula",
 			gutters: ["CodeMirror-lint-markers"],
-			lint: true
+			lint: true, 
+			lineNumbers: true
 		});
 		myCodeMirror.setValue("/*jshint esversion: 6*/\n");
  		//ESplay methods
