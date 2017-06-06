@@ -8,7 +8,8 @@ module.exports = (app, $, JSHINT, examplesES6) => {
 			theme: "dracula",
 			gutters: ["CodeMirror-lint-markers"],
 			lint: true, 
-			lineNumbers: true
+			lineNumbers: true, 
+			autoCloseBrackets: true
 		});
 		myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
  		//ESplay methods
@@ -62,13 +63,17 @@ module.exports = (app, $, JSHINT, examplesES6) => {
  							output = `
  							logs = [];
  							${code}                                      
- 							for(let i = 0; i < logs.length; i++){
- 								para = document.createElement("P");   
- 								para.className += ' output';               
- 								t = document.createTextNode(logs[i][0]);      
- 								para.appendChild(t); 
- 								document.body.appendChild(para);
- 							}`;
+ 							setInterval(function(){
+ 								if(logs.length > 0){
+ 									for(let i = 0; i < logs.length; i++){
+ 										para = document.createElement("P");                       
+ 										t = document.createTextNode(logs[i][0]);      
+ 										para.appendChild(t); 
+ 										document.body.appendChild(para);
+ 									}
+ 									logs = [];
+ 								}
+ 							}, 100)`;
  						}
  						const frame = window.frames[0];; 
  						frame.document.open();

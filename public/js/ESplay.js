@@ -10,7 +10,6 @@
 	require("./ESplayCtrl")(ESplayApp, $);
 	//bootstrap
 	require("bootstrap");	
-	
 })();
 
 

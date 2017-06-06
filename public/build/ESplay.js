@@ -70738,7 +70738,8 @@ module.exports = function (app, $, JSHINT, examplesES6) {
       theme: "dracula",
       gutters: ["CodeMirror-lint-markers"],
       lint: true,
-      lineNumbers: true
+      lineNumbers: true,
+      autoCloseBrackets: true
     });
     myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
     //ESplay methods
@@ -70786,7 +70787,7 @@ module.exports = function (app, $, JSHINT, examplesES6) {
             if (!called) {
               output = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 100)";
             } else {
-              output = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");   \n \t\t\t\t\t\t\t\tpara.className += ' output';               \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
+              output = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 100)";
             }
             var frame = window.frames[0];;
             frame.document.open();
