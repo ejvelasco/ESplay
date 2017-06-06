@@ -70740,7 +70740,7 @@ module.exports = function (app, $, JSHINT, examplesES6) {
       lint: true,
       lineNumbers: true
     });
-    myCodeMirror.setValue("/*jshint esversion: 6*/\n");
+    myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
     //ESplay methods
     var ESplayMethods = {
       setUpExamples: function setUpExamples($scope) {
@@ -70784,7 +70784,7 @@ module.exports = function (app, $, JSHINT, examplesES6) {
             var code = data.result.code;
             var output = void 0;
             if (!called) {
-              output = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
+              output = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 100)";
             } else {
               output = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\tpara = document.createElement(\"P\");   \n \t\t\t\t\t\t\t\tpara.className += ' output';               \n \t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t}";
             }
@@ -70820,6 +70820,10 @@ module.exports = [{
 	title: "Classes",
 	desc: "JavaScript classes introduced in ECMAScript 2015 are primarily syntactical \nsugar over JavaScript's existing prototype-based inheritance. The class syntax is not \nintroducing a new object-oriented inheritance model to JavaScript. JavaScript classes \nprovide a much simpler and clearer syntax to create objects and deal with inheritance.",
 	code: "\nclass Animal { \n\tconstructor(name) {\n\t\tthis.name = name;\n\t\tthis.breed = \"German Shepherd\";\n\t}\n\tswitchBreed(){\n\t\tthis.breed = \"Chihuahua\";\n\t}\n\tspeak() {\n\t\tconsole.log(this.name + ' makes a noise.');\n\t}\n}\n\nclass Dog extends Animal {\n\tspeak() {\n\t\tconsole.log(this.name + ' the ' + this.breed + ' barks.');\n\t}\n}\n\nvar dog = new Dog('Macy');\ndog.speak(); // Macy the German Shepherd barks.\ndog.switchBreed(); \ndog.speak(); // Macy the Chihuahua barks."
+}, {
+	title: "Enhanced Object Literals",
+	desc: "Object literals are extended to support shorthand for foo: foo \nassignments, defining methods, making super calls, and computing property \nnames with expressions. Together, these also bring object literals and class \ndeclarations closer together, and let object-based design benefit from some \nof the same conveniences.",
+	code: "\nvar printKeys = function(object){\n\tvar keys = Object.keys(object);\n\tfor(var i = 0; i < keys.length; i++){\n\t\tconsole.log(keys[i]);\n\t}\n};\nvar obj = {\n    // Shorthand for \u2018handler: handler\u2019\n    printKeys,\n    // Methods\n    toString() {\n    \t// Super calls\n     \treturn \"d \" + super.toString();\n    },\n    // Computed (dynamic) property names\n    [ 'prop_' + (() => 42)() ]: 42\n};\n\nobj.printKeys(obj);"
 }];
 
 },{}]},{},[39]);

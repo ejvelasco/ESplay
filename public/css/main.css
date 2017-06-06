@@ -7,8 +7,14 @@ body{
   width: 100% !important;
   background-color: black !important;
 }
-.codemirror-lines{
-  margin-left: -20px !important;
+.bold{
+  font-family: "Yellowtail", cursive !important;
+  font-size: 1.9em;
+  font-weight: bolder !important;
+}
+.blue{
+  font-size: 1.3em;
+  color: #00FFBD !important;
 }
 .row{
   padding: 0 !important;

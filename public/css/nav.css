@@ -6,11 +6,14 @@
 	width: 100% !important;
 	font-family: "Roboto", sans-serif !important;
 	font-size: 1.2em;
-	height: 5% !important;
+	height: 60px !important;
+	background-color: black !important;
+	border-radius: 0px !important;
 }
 .navbar a{
-	color: rgba(40,42,54,1) !important;
+	color: rgba(255,255,255,1) !important;
 	cursor: pointer;
+	line-height: 30px !important;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none; 
@@ -20,6 +23,16 @@
 	font-weight: lighter !important;
 	transition: color .2s ease-in-out;
 }
+.navbar a:focus{
+	background-color: black !important;
+	color: white;
+}
 .navbar a:hover{
-	color: rgba(40,42,54,.4) !important;
+	color: rgba(255,255,255,.7) !important;
+}
+.dropdown a{
+	background-color: black !important;
+}
+ul{
+	background-color: black !important;
 }

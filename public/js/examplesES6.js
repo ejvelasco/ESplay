@@ -61,5 +61,33 @@ var dog = new Dog('Macy');
 dog.speak(); // Macy the German Shepherd barks.
 dog.switchBreed(); 
 dog.speak(); // Macy the Chihuahua barks.`
+	},
+	{
+		title: "Enhanced Object Literals",
+		desc: `Object literals are extended to support shorthand for foo: foo 
+assignments, defining methods, making super calls, and computing property 
+names with expressions. Together, these also bring object literals and class 
+declarations closer together, and let object-based design benefit from some 
+of the same conveniences.`, 
+		code: `
+var printKeys = function(object){
+	var keys = Object.keys(object);
+	for(var i = 0; i < keys.length; i++){
+		console.log(keys[i]);
+	}
+};
+var obj = {
+    // Shorthand for ‘handler: handler’
+    printKeys,
+    // Methods
+    toString() {
+    	// Super calls
+     	return "d " + super.toString();
+    },
+    // Computed (dynamic) property names
+    [ 'prop_' + (() => 42)() ]: 42
+};
+
+obj.printKeys(obj);`
 	}
 ];

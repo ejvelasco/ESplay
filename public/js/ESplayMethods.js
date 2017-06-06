@@ -10,7 +10,7 @@ module.exports = (app, $, JSHINT, examplesES6) => {
 			lint: true, 
 			lineNumbers: true
 		});
-		myCodeMirror.setValue("/*jshint esversion: 6*/\n");
+		myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
  		//ESplay methods
  		const ESplayMethods = {
  			
@@ -47,12 +47,17 @@ module.exports = (app, $, JSHINT, examplesES6) => {
  							}
  							${code}
  							let para, t;
- 							for(let i = 0; i < logs.length; i++){
- 								para = document.createElement("P");                       
- 								t = document.createTextNode(logs[i][0]);      
- 								para.appendChild(t); 
- 								document.body.appendChild(para);
- 							}`;
+ 							setInterval(function(){
+ 								if(logs.length > 0){
+ 									for(let i = 0; i < logs.length; i++){
+ 										para = document.createElement("P");                       
+ 										t = document.createTextNode(logs[i][0]);      
+ 										para.appendChild(t); 
+ 										document.body.appendChild(para);
+ 									}
+ 									logs = [];
+ 								}
+ 							}, 100)`;
  						} else {
  							output = `
  							logs = [];
