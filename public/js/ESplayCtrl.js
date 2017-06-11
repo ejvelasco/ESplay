@@ -17,7 +17,7 @@ module.exports = (app, $) => {
 			ESplayMethods.selectLib($scope,lib);
 		}
 		$scope.selectTheme = (theme) => {
-			ESplayMethods.selectTheme(theme);
+			ESplayMethods.selectTheme($scope, theme);
 		}
 
 	}]);

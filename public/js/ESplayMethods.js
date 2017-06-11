@@ -40,6 +40,7 @@ module.exports = (app, $, JSHINT, examplesES6) => {
 	 	 				url: "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"
 	 	 			}
  	 			];
+ 	 			//set libs
  	 			this.libs = new Set();
  			},
  			setUpThemes($scope){
@@ -73,7 +74,13 @@ module.exports = (app, $, JSHINT, examplesES6) => {
 		 				hue: 300
 					}
 				];
+				//check first theme
+				setTimeout(() => {
+					$('.theme-0').addClass("dd-active");
+				});
+				//set themes
 				this.theme = null;
+				this.lastTheme = $scope.themes[0];
  			},
  			selectExample(example) {
  				const str = "/*jshint esversion: 6*/\n\n";
@@ -87,16 +94,30 @@ module.exports = (app, $, JSHINT, examplesES6) => {
  				}
  				window.frames[0].document.body.innerHTML = "";
  			},
- 			selectTheme(theme) {
- 				$(".CodeMirror-line span").css("filter", `hue-rotate(${theme.hue}deg)`);
+ 			selectTheme($scope, theme) {
+ 				//set theme and get last theme
  				this.theme = theme;
+ 				let lastTheme = this.lastTheme;
+ 				//get link
+ 				let idx = $scope.themes.indexOf(theme);
+ 				let link = `.theme-${idx}`;
+ 				let linkHTML = $(link).html();
+ 				//select theme
+ 				$(link).addClass("dd-active");
+ 				$(".CodeMirror-line span").css("filter", `hue-rotate(${theme.hue}deg)`);
+ 				//deselect last theme
+ 				idx = $scope.themes.indexOf(lastTheme);
+ 				link = `.theme-${idx}`;
+ 				$(link).removeClass("dd-active");
+ 				//set last theme
+ 				this.lastTheme = theme;
  			},
  			selectLib($scope, lib) {
- 				
+ 				//set lib and get last
  				const idx = $scope.libs.indexOf(lib);
  				let link = `.lib-${idx}`;
  				let linkHTML = $(link).html();
-
+ 				//clear out frame
  				if (this.libs.has(lib.url)) {
  					linkHTML = `${lib.name}`;
  					$(link).html(linkHTML);

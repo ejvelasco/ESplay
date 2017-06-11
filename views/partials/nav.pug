@@ -22,7 +22,7 @@
 					li(class="dropdown")
 						a(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") #[span.glyphicon.glyphicon-cog] Preferences
 						ul(class="dropdown-menu")
-							li(class="dropdown-submenu")
+							//- li(class="dropdown-submenu")
 								a(class="test newDropDown" tabindex="-1" href="#") Load library #[span(class="caret")]
 									ul(class="dropdown-menu")
 										li(ng-repeat="lib in libs")
@@ -32,6 +32,6 @@
 								a(class="test newDropDown" tabindex="-1" href="#") Choose theme #[span(class="caret")]
 									ul(class="dropdown-menu")
 										li(ng-repeat="theme in themes")
-											a(class = "dd-link" tabindex="-1" href="" ng-click="selectTheme(theme)") {{ theme.name }}
+											a( class = "dd-link theme-{{$index}}" tabindex="-1" href="" ng-click="selectTheme(theme)") {{ theme.name }}
 	
 										

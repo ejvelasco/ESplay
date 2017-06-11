@@ -70741,7 +70741,7 @@ module.exports = function (app, $) {
 			ESplayMethods.selectLib($scope, lib);
 		};
 		$scope.selectTheme = function (theme) {
-			ESplayMethods.selectTheme(theme);
+			ESplayMethods.selectTheme($scope, theme);
 		};
 	}]);
 };
@@ -70807,6 +70807,7 @@ module.exports = function (app, $, JSHINT, examplesES6) {
           name: "Underscore 1.8.3",
           url: "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"
         }];
+        //set libs
         this.libs = new Set();
       },
       setUpThemes: function setUpThemes($scope) {
@@ -70832,7 +70833,13 @@ module.exports = function (app, $, JSHINT, examplesES6) {
           name: "Tangerine",
           hue: 300
         }];
+        //check first theme
+        setTimeout(function () {
+          $('.theme-0').addClass("dd-active");
+        });
+        //set themes
         this.theme = null;
+        this.lastTheme = $scope.themes[0];
       },
       selectExample: function selectExample(example) {
         var str = "/*jshint esversion: 6*/\n\n";
@@ -70843,16 +70850,30 @@ module.exports = function (app, $, JSHINT, examplesES6) {
         }
         window.frames[0].document.body.innerHTML = "";
       },
-      selectTheme: function selectTheme(theme) {
-        $(".CodeMirror-line span").css("filter", "hue-rotate(" + theme.hue + "deg)");
+      selectTheme: function selectTheme($scope, theme) {
+        //set theme and get last theme
         this.theme = theme;
+        var lastTheme = this.lastTheme;
+        //get link
+        var idx = $scope.themes.indexOf(theme);
+        var link = ".theme-" + idx;
+        var linkHTML = $(link).html();
+        //select theme
+        $(link).addClass("dd-active");
+        $(".CodeMirror-line span").css("filter", "hue-rotate(" + theme.hue + "deg)");
+        //deselect last theme
+        idx = $scope.themes.indexOf(lastTheme);
+        link = ".theme-" + idx;
+        $(link).removeClass("dd-active");
+        //set last theme
+        this.lastTheme = theme;
       },
       selectLib: function selectLib($scope, lib) {
-
+        //set lib and get last
         var idx = $scope.libs.indexOf(lib);
         var link = ".lib-" + idx;
         var linkHTML = $(link).html();
-
+        //clear out frame
         if (this.libs.has(lib.url)) {
           linkHTML = "" + lib.name;
           $(link).html(linkHTML);

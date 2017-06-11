@@ -9,7 +9,11 @@ body{
 	float: right !important;
 }
 .glyphicon-ok{
+	margin-top: -5px !important;
 	font-size: .7em !important;
+}
+li .dd-active{
+	color: #00FFBD !important;
 }
 #code{
 	width: 100% !important;
