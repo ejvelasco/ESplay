@@ -14,7 +14,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
-require("./routes/get/views")(app, babel);
+require("./routes/get/views")(app);
+require("./routes/post/transpile")(app, babel);
 
 app.listen(port, () => {
   console.log("Web server listening on port " + port);

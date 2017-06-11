@@ -70710,6 +70710,7 @@ function hasOwnProperty(obj, prop) {
 	require("./ESplayCtrl")(ESplayApp, $);
 	//bootstrap
 	require("bootstrap");
+	//dropdown menu
 	$(document).ready(function () {
 		$('.dropdown-submenu a.test').on("click", function (e) {
 			$(this).next('ul').toggle();
@@ -70726,12 +70727,18 @@ function hasOwnProperty(obj, prop) {
 module.exports = function (app, $) {
 
 	app.controller("ESplayCtrl", ["$scope", "$http", "ESplayMethods", function ($scope, $http, ESplayMethods) {
+		//set up data
 		ESplayMethods.setUpExamples($scope);
+		ESplayMethods.setUpLibs($scope);
 		ESplayMethods.setUpThemes($scope);
+		//set up methods
 		$scope.clear = ESplayMethods.clear();
 		$scope.transpile = ESplayMethods.transpile($scope, $http, false);
 		$scope.selectExample = function (example) {
 			ESplayMethods.selectExample(example);
+		};
+		$scope.selectLib = function (lib) {
+			ESplayMethods.selectLib($scope, lib);
 		};
 		$scope.selectTheme = function (theme) {
 			ESplayMethods.selectTheme(theme);
@@ -70745,15 +70752,19 @@ module.exports = function (app, $) {
 module.exports = function (app, $, JSHINT, examplesES6) {
 
   app.factory("ESplayMethods", function ($http) {
-
+    //set up editor
     var myCodeMirror = CodeMirror(document.getElementById("code"), {
       theme: "dracula",
       gutters: ["CodeMirror-lint-markers"],
       lint: true,
       lineNumbers: true,
-      autoCloseBrackets: true
+      autoCloseBrackets: true,
+      tabSize: 2
     });
+    var $iframe = $('#iframe');
     myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
+    $iframe.contents().find("head").append("<link rel='stylesheet' href='/css/main.css'>");
+    //define app methods
     var ESplayMethods = {
       clear: function clear() {
         return function () {
@@ -70788,6 +70799,16 @@ module.exports = function (app, $, JSHINT, examplesES6) {
           }
         }
       },
+      setUpLibs: function setUpLibs($scope) {
+        $scope.libs = [{
+          name: "Lodash 4.17.4",
+          url: "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"
+        }, {
+          name: "Underscore 1.8.3",
+          url: "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"
+        }];
+        this.libs = new Set();
+      },
       setUpThemes: function setUpThemes($scope) {
         $scope.themes = [{
           name: "ESplay",
@@ -70803,12 +70824,12 @@ module.exports = function (app, $, JSHINT, examplesES6) {
           hue: 220
         }, {
           name: "Lollipop",
-          hue: 90
+          hue: 250
         }, {
           name: "Cinammon",
           hue: 280
         }, {
-          name: "Citrus",
+          name: "Tangerine",
           hue: 300
         }];
         this.theme = null;
@@ -70826,6 +70847,23 @@ module.exports = function (app, $, JSHINT, examplesES6) {
         $(".CodeMirror-line span").css("filter", "hue-rotate(" + theme.hue + "deg)");
         this.theme = theme;
       },
+      selectLib: function selectLib($scope, lib) {
+
+        var idx = $scope.libs.indexOf(lib);
+        var link = ".lib-" + idx;
+        var linkHTML = $(link).html();
+
+        if (this.libs.has(lib.url)) {
+          linkHTML = "" + lib.name;
+          $(link).html(linkHTML);
+          $iframe.contents().find("body").empty();
+          this.libs.delete(lib.url);
+        } else {
+          linkHTML += "&nbsp;&nbsp;<span class=\"glyphicon glyphicon-ok\"></span>";
+          $(link).html(linkHTML);
+          this.libs.add(lib.url);
+        }
+      },
       transpile: function transpile($scope, $http, called) {
 
         return function () {
@@ -70834,24 +70872,14 @@ module.exports = function (app, $, JSHINT, examplesES6) {
           $http.post('/transpile', message).then(function (res) {
             var data = res.data;
             var code = data.result.code;
-            var output = void 0;
+            var output = "";
             if (!called) {
-              output = "let logs = [];\n \t\t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\t\t   logs.push(arguments);\n \t\t\t\t\t\t\t   log.apply(console, arguments);\n \t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t" + code + "\n \t\t\t\t\t\t\tlet para, t;\n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 30)";
+              output = "\n \t\t\t\t\t\tlet logs = [];\n \t\t\t\t\t\tlet log = console.log;\n \t\t\t\t\t\tconsole.log = function(){\n \t\t\t\t\t\tlogs.push(arguments);\n \t\t\t\t\t\tlog.apply(console, arguments);\n \t\t\t\t\t\t}";
             } else {
-              output = "\n \t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t\t\t}\n \t\t\t\t\t\t\t}, 30)";
+              output = "logs = [];";
             }
-            var frame = window.frames[0];
-            frame.document.open();
-            frame.document.write("<!DOCTYPE html>");
-            frame.document.write("<html>");
-            frame.document.write("<head>");
-            frame.document.write("<link rel='stylesheet' href='/css/main.css'>");
-            frame.document.write("</head>");
-            frame.document.write("<body>");
-            frame.document.write("<script type='text/javascript'>" + output + "</script>");
-            frame.document.write("</body>");
-            frame.document.write("</html>");
-            frame.document.close();
+            output += "\n \t\t\t\t\t\t" + code + "                                      \n \t\t\t\t\t\tsetInterval(function(){\n \t\t\t\t\t\tif(logs.length > 0){\n \t\t\t\t\t\tfor(let i = 0; i < logs.length; i++){\n \t\t\t\t\t\tpara = document.createElement(\"P\");                       \n \t\t\t\t\t\tt = document.createTextNode(logs[i][0]);      \n \t\t\t\t\t\tpara.appendChild(t); \n \t\t\t\t\t\tdocument.body.appendChild(para);\n \t\t\t\t\t\t}\n \t\t\t\t\t\tlogs = [];\n \t\t\t\t\t\t}\n \t\t\t\t\t\t}, 30)";
+            $iframe.contents().find("body").append("<script type='text/javascript'>" + output + "</script>");
             called = true;
           });
         };

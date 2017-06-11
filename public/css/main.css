@@ -1,80 +1,89 @@
 body{
-  padding: 0 !important;
-  margin: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 .CodeMirror-line span{
-    filter: hue-rotate(30deg); 
+		filter: hue-rotate(30deg); 
+}
+.checkbox{
+	float: right !important;
+}
+.glyphicon-ok{
+	font-size: .7em !important;
 }
 #code{
-  width: 100% !important;
-  font-size: 1.1em;
-  background-color: black !important;
+	width: 100% !important;
+	font-size: 1.1em;
+	background-color: black !important;
 }
 .bold{
-  font-family: "Yellowtail", cursive !important;
-  font-size: 1.9em;
-  font-weight: bolder !important;
+	font-family: "Yellowtail", cursive !important;
+	font-size: 1.9em;
+	font-weight: bolder !important;
 }
 .blue{
-  font-size: 1.1em;
-  color: #00FFBD !important;
+	font-size: 1.1em;
+	color: #00FFBD !important;
 }
 .dropdown-submenu {
-  position: relative;
-  outline: none !important;
-  border: none !important;
+	position: relative;
+	outline: none !important;
+	border: none !important;
 }
-#newDropDown:focus{
-  outline: none !important;
+.newDropDown:focus{
+	outline: none !important;
+}
+.dd-link:focus{
+	outline: none !important;
 }
 .dropdown-submenu .dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -1px;
+	top: 0;
+	left: 100%;
+	margin-top: -1px;
 }
 .row{
-  padding: 0 !important;
-  margin: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 iframe{
-  padding: 15px;
-  width: 100%;
-  font-size: 1.1em !important;
-  background-color: rgba(1,85,174, .5) !important;
+	padding: 15px;
+	width: 100%;
+	font-size: 1.1em !important;
+	background-color: rgba(1,85,174, .5) !important;
 }
 p{
-  padding: 5px !important;
-  margin: 0 !important;
-  border-bottom: 1px solid rgba(255,255,255,.3) !important;
-  font-family: "Lucida Console" !important;
-  color: white !important;
+	padding: 5px !important;
+	margin: 0 !important;
+	border-bottom: 1px solid rgba(255,255,255,.3) !important;
+	font-family: "Lucida Console" !important;
+	color: white !important;
 }
 .label{
-  position: absolute !important;
-  border: none !important;
-  right: 20px !important;
-  z-index: 9998 !important;
-  height: 30px !important;
-  line-height: 30px !important;
-  padding-left: 10px !important;
-  text-transform: uppercase !important;
-  background-color: transparent !important;
-  font-family: "Roboto", sans-serif !important;
-  color: rgba(255,255,255,.4) !important;
+	position: absolute !important;
+	border: none !important;
+	right: 20px !important;
+	z-index: 9998 !important;
+	height: 30px !important;
+	line-height: 30px !important;
+	padding-left: 10px !important;
+	text-transform: uppercase !important;
+	background-color: transparent !important;
+	font-family: "Roboto", sans-serif !important;
+	color: rgba(255,255,255,.4) !important;
 }
 .left, .right{
 	padding: 0 !important;
 	margin: 0 !important;
-  padding-top: 60px !important;
-  display : flex;
-  height : 100% !important;
-  background-color: black;
+	padding-top: 60px !important;
+	display : flex;
+	height : 100% !important;
+	background-color: black;
 }
 @media (max-width: 1200px) {
-  .left{
-    height:50%
-  }
-  .right{
-    height:50%
-  }
+	.left{
+		height:50%
+	}
+	.right{
+		height:50%
+	}
 }

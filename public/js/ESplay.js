@@ -10,6 +10,7 @@
 	require("./ESplayCtrl")(ESplayApp, $);
 	//bootstrap
 	require("bootstrap");	
+	//dropdown menu
 	$(document).ready(function(){
 	  $('.dropdown-submenu a.test').on("click", function(e){
 	    $(this).next('ul').toggle();
