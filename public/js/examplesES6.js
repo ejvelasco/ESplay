@@ -171,8 +171,8 @@ for b in the function head:`,
 code: `
 //old
 function multiply(a, b) {
-  b = (typeof b !== 'undefined') ?  b : 1;
-  return a * b;
+  	b = (typeof b !== 'undefined') ?  b : 1;
+  	return a * b;
 }
 
 //new
@@ -183,5 +183,50 @@ function multiply(a, b = 1) {
 console.log(multiply(5, 2)); 
 console.log(multiply(5, 1)); 
 console.log(multiply(5));`
+	}, 
+	{
+		title: "Spread Operator",
+	desc: `The spread syntax allows an expression to be expanded in 
+places where multiple arguments (for function calls) or multiple 
+elements (for array literals) or multiple variables (for 
+destructuring assignment) are expected.`, 
+		code: `
+function sum(x, y, z) {
+  	return x + y + z;
+}
+// Pass each elem of array as argument
+console.log(sum(...[1,2,3]));
+
+//array literals
+var parts = ['shoulders', 'knees']; 
+var lyrics = ['head', ...parts, 'and', 'toes']; 
+console.log(lyrics.join(", "));`
+	}, 
+	{
+		title: "Let",
+		desc:`Variables declared by let have as their scope the 
+block in which they are defined, as well as in any contained 
+sub-blocks . In this way, let works very much like var. 
+The main difference is that the scope of a var variable is the entire enclosing function:`, 
+code: `
+function varTest() {
+  	var x = 1;
+  	if (true) {
+    	var x = 2;  // same variable!
+    	console.log(x);  // 2
+  	}
+  	console.log(x);  // 2
+}
+
+function letTest() {
+  	let x = 1;
+  	if (true) {
+    	let x = 2;  // different variable
+    	console.log(x);  // 2
+ 	}
+	console.log(x);  // 1
+}
+varTest();
+letTest();`
 	}
 ];

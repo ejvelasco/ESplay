@@ -2,9 +2,12 @@ body{
   padding: 0 !important;
   margin: 0 !important;
 }
-
+.CodeMirror-line span{
+    filter: hue-rotate(30deg); 
+}
 #code{
   width: 100% !important;
+  font-size: 1.1em;
   background-color: black !important;
 }
 .bold{
@@ -16,6 +19,19 @@ body{
   font-size: 1.1em;
   color: #00FFBD !important;
 }
+.dropdown-submenu {
+  position: relative;
+  outline: none !important;
+  border: none !important;
+}
+#newDropDown:focus{
+  outline: none !important;
+}
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
 .row{
   padding: 0 !important;
   margin: 0 !important;
@@ -23,6 +39,7 @@ body{
 iframe{
   padding: 15px;
   width: 100%;
+  font-size: 1.1em !important;
   background-color: rgba(1,85,174, .5) !important;
 }
 p{
@@ -35,8 +52,8 @@ p{
 .label{
   position: absolute !important;
   border: none !important;
-  right: 10px !important;
-  z-index: 9999 !important;
+  right: 20px !important;
+  z-index: 9998 !important;
   height: 30px !important;
   line-height: 30px !important;
   padding-left: 10px !important;
@@ -48,14 +65,10 @@ p{
 .left, .right{
 	padding: 0 !important;
 	margin: 0 !important;
+  padding-top: 60px !important;
   display : flex;
-  height : 70% !important;
-}
-.left{
-	background-color: black;
-}
-.right{
-	background-color: black;
+  height : 100% !important;
+  background-color: black;
 }
 @media (max-width: 1200px) {
   .left{

@@ -4,13 +4,12 @@ block head
 	link(rel="stylesheet" href="/codemirror/lib/codemirror.css")
 	link(rel="stylesheet" href="/codemirror/theme/dracula.css")
 	link(rel="stylesheet" href="/codemirror/addon/lint/lint.css")
-	link(rel="stylesheet", href="/css/ESplay.css")
+	link(rel="stylesheet", href="/build/ESplay.css")
 block content
 	body(ng-app="ESplayApp")
 		#container(ng-controller="ESplayCtrl")
 			include partials/nav
 			include partials/esplay
-			//- include partials/footer
 	script(src="/codemirror/lib/codemirror.js")
 	script(src="/codemirror/addon/edit/closebrackets.js")
 	script(src="/codemirror/mode/javascript/javascript.js")

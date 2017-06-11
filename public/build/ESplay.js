@@ -70710,6 +70710,13 @@ function hasOwnProperty(obj, prop) {
 	require("./ESplayCtrl")(ESplayApp, $);
 	//bootstrap
 	require("bootstrap");
+	$(document).ready(function () {
+		$('.dropdown-submenu a.test').on("click", function (e) {
+			$(this).next('ul').toggle();
+			e.stopPropagation();
+			e.preventDefault();
+		});
+	});
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -70720,10 +70727,14 @@ module.exports = function (app, $) {
 
 	app.controller("ESplayCtrl", ["$scope", "$http", "ESplayMethods", function ($scope, $http, ESplayMethods) {
 		ESplayMethods.setUpExamples($scope);
+		ESplayMethods.setUpThemes($scope);
 		$scope.clear = ESplayMethods.clear();
 		$scope.transpile = ESplayMethods.transpile($scope, $http, false);
 		$scope.selectExample = function (example) {
 			ESplayMethods.selectExample(example);
+		};
+		$scope.selectTheme = function (theme) {
+			ESplayMethods.selectTheme(theme);
 		};
 	}]);
 };
@@ -70743,7 +70754,6 @@ module.exports = function (app, $, JSHINT, examplesES6) {
       autoCloseBrackets: true
     });
     myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
-
     var ESplayMethods = {
       clear: function clear() {
         return function () {
@@ -70778,10 +70788,43 @@ module.exports = function (app, $, JSHINT, examplesES6) {
           }
         }
       },
+      setUpThemes: function setUpThemes($scope) {
+        $scope.themes = [{
+          name: "ESplay",
+          hue: 30
+        }, {
+          name: "Mint",
+          hue: 0
+        }, {
+          name: "Spearmint",
+          hue: 170
+        }, {
+          name: "Wintermint",
+          hue: 220
+        }, {
+          name: "Lollipop",
+          hue: 90
+        }, {
+          name: "Cinammon",
+          hue: 280
+        }, {
+          name: "Citrus",
+          hue: 300
+        }];
+        this.theme = null;
+      },
       selectExample: function selectExample(example) {
         var str = "/*jshint esversion: 6*/\n\n";
         myCodeMirror.setValue(str + "/* " + example.desc + " */" + " \n \t\t\t\t\t" + example.code);
+        var theme = this.theme;
+        if (theme) {
+          $(".CodeMirror-line span").css("filter", "hue-rotate(" + theme.hue + "deg)");
+        }
         window.frames[0].document.body.innerHTML = "";
+      },
+      selectTheme: function selectTheme(theme) {
+        $(".CodeMirror-line span").css("filter", "hue-rotate(" + theme.hue + "deg)");
+        this.theme = theme;
       },
       transpile: function transpile($scope, $http, called) {
 
@@ -70849,7 +70892,15 @@ module.exports = [{
 }, {
 	title: "Default Parameters",
 	desc: "In JavaScript, parameters of functions default to undefined. \nHowever, in some situations it might be useful to set a different \ndefault value. This is where default parameters can help. With \ndefault parameters in ES2015, the check in the function body is \nno longer necessary. Now, you can simply put 1 as the default value \nfor b in the function head:",
-	code: "\n//old\nfunction multiply(a, b) {\n  b = (typeof b !== 'undefined') ?  b : 1;\n  return a * b;\n}\n\n//new\nfunction multiply(a, b = 1) {\n  \treturn a * b;\n}\n\nconsole.log(multiply(5, 2)); \nconsole.log(multiply(5, 1)); \nconsole.log(multiply(5));"
+	code: "\n//old\nfunction multiply(a, b) {\n  \tb = (typeof b !== 'undefined') ?  b : 1;\n  \treturn a * b;\n}\n\n//new\nfunction multiply(a, b = 1) {\n  \treturn a * b;\n}\n\nconsole.log(multiply(5, 2)); \nconsole.log(multiply(5, 1)); \nconsole.log(multiply(5));"
+}, {
+	title: "Spread Operator",
+	desc: "The spread syntax allows an expression to be expanded in \nplaces where multiple arguments (for function calls) or multiple \nelements (for array literals) or multiple variables (for \ndestructuring assignment) are expected.",
+	code: "\nfunction sum(x, y, z) {\n  \treturn x + y + z;\n}\n// Pass each elem of array as argument\nconsole.log(sum(...[1,2,3]));\n\n//array literals\nvar parts = ['shoulders', 'knees']; \nvar lyrics = ['head', ...parts, 'and', 'toes']; \nconsole.log(lyrics.join(\", \"));"
+}, {
+	title: "Let",
+	desc: "Variables declared by let have as their scope the \nblock in which they are defined, as well as in any contained \nsub-blocks . In this way, let works very much like var. \nThe main difference is that the scope of a var variable is the entire enclosing function:",
+	code: "\nfunction varTest() {\n  \tvar x = 1;\n  \tif (true) {\n    \tvar x = 2;  // same variable!\n    \tconsole.log(x);  // 2\n  \t}\n  \tconsole.log(x);  // 2\n}\n\nfunction letTest() {\n  \tlet x = 1;\n  \tif (true) {\n    \tlet x = 2;  // different variable\n    \tconsole.log(x);  // 2\n \t}\n\tconsole.log(x);  // 1\n}\nvarTest();\nletTest();"
 }];
 
 },{}]},{},[39]);

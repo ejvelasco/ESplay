@@ -9,6 +9,7 @@
 	height: 60px !important;
 	background-color: black !important;
 	border-radius: 0px !important;
+	position: fixed;
 }
 .navbar a{
 	color: rgba(255,255,255,1) !important;

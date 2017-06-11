@@ -12,30 +12,69 @@ module.exports = (app, $, JSHINT, examplesES6) => {
 			autoCloseBrackets: true
 		});
 		myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");
- 		
  		const ESplayMethods = {
- 			clear(){
+ 			clear() {
  				return () =>{
  					myCodeMirror.setValue("/*jshint esversion: 6*/\n/* Enter some next-gen JS below or choose an example. Happy coding! */\n");	
  					window.frames[0].document.body.innerHTML = "";
  				}
  			},
- 			setUpExamples($scope){
+ 			setUpExamples($scope) {
  				$scope.examplesES6 = [];
  				for( let example of examplesES6 ){
  					$scope.examplesES6.push(example);
  				}
  			},
- 			selectExample(example){
+ 			setUpThemes($scope){
+ 				$scope.themes = [
+		 			{ 
+		 				name: "ESplay",
+		 				hue: 30
+		 			},
+		 			{ 
+		 				name: "Mint", 
+		 				hue: 0
+		 			},
+		 			{ 
+		 				name: "Spearmint",
+		 				hue: 170,
+		 			},
+		 			{ 
+		 				name: "Wintermint",
+		 				hue: 220,
+		 			},
+		 			{ 
+		 				name: "Lollipop",
+		 				hue: 90,
+		 			},
+		 			{ 
+		 				name: "Cinammon",
+		 				hue: 280,
+		 			},
+		 			{ 
+		 				name: "Citrus",
+		 				hue: 300
+					}
+				];
+				this.theme = null;
+ 			},
+ 			selectExample(example) {
  				const str = "/*jshint esversion: 6*/\n\n";
  				myCodeMirror.setValue(
  					`${str + "/* " + example.desc + " */"} 
  					${example.code}`
  				);
+ 				const theme = this.theme;
+ 				if(theme){
+ 					$(".CodeMirror-line span").css("filter", `hue-rotate(${theme.hue}deg)`);	
+ 				}
  				window.frames[0].document.body.innerHTML = "";
  			},
-
- 			transpile($scope, $http, called){
+ 			selectTheme(theme) {
+ 				$(".CodeMirror-line span").css("filter", `hue-rotate(${theme.hue}deg)`);
+ 				this.theme = theme;
+ 			},
+ 			transpile($scope, $http, called) {
  				
  				return () => {
  					

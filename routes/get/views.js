@@ -1,4 +1,4 @@
-module.exports = (app, babel, util) => {
+module.exports = (app, babel) => {
 	app.get("/", (req, res) => {
 	    	res.render("main");
   	});
